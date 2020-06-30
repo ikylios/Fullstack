@@ -4,5 +4,3 @@
 
 
 [Osa 1](https://github.com/ikylios/Fullstack/tree/master/osa1)
-
-TEST
