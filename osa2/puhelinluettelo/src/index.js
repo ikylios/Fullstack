@@ -30,15 +30,12 @@ const PersonForm = ({ newName, handleNameChange, newNumber, handleNumberChange, 
 
 const App = () => {
 
-  const [ persons, setPersons] = useState([
-  ]) 
+  const [ persons, setPersons] = useState([]) 
 
   useEffect(() => {
-    console.log('effect')
     axios
       .get('http://localhost:3001/persons')
       .then(response => {
-        console.log('promise fulfilled')
         setPersons(response.data)
     })
   }, [])
@@ -55,8 +52,12 @@ const App = () => {
       window.alert(`${foundPerson} is already added to phonebook`)
     } else {
       const newPerson = 
-        { name: newName ,nnumber: newNumber }
-      setPersons(persons.concat(newPerson))
+        { name: newName , number: newNumber }
+      axios
+        .post('http://localhost:3001/persons', newPerson)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+        })
     }
   }
 
