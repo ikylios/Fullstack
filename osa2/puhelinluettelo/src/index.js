@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import personService from './services/persons'
 
 const FilterForm = ({ handleFilterChange, filter }) => {
   return (
@@ -30,14 +30,14 @@ const PersonForm = ({ newName, handleNameChange, newNumber, handleNumberChange, 
 
 const App = () => {
 
-  const [ persons, setPersons] = useState([]) 
+  const [ persons, setPersons ] = useState([]) 
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
+    personService
+      .getAll()
       .then(response => {
-        setPersons(response.data)
-    })
+        setPersons(response)
+      })
   }, [])
 
 
@@ -53,10 +53,10 @@ const App = () => {
     } else {
       const newPerson = 
         { name: newName , number: newNumber }
-      axios
-        .post('http://localhost:3001/persons', newPerson)
+      personService
+        .create(newPerson)
         .then(response => {
-          setPersons(persons.concat(response.data))
+          setPersons(persons.concat(response))
         })
     }
   }
