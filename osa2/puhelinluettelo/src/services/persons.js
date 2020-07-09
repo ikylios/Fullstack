@@ -8,7 +8,13 @@ const getAll = () => {
 
 const create = newPerson => {
     const request = axios.post(baseUrl, newPerson)
+    console.log('eka logi', request.then(response => response.data))
     return request.then(response => response.data)
 }
 
-export default { getAll, create }
+const deletePerson = deleteId => {
+    axios.delete(`${baseUrl}/${deleteId}`)
+    return getAll()
+}
+
+export default { getAll, create, deletePerson }

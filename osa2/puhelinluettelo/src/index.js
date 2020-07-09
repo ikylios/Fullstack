@@ -22,9 +22,21 @@ const PersonForm = ({ newName, handleNameChange, newNumber, handleNumberChange, 
         Number: <input value={newNumber} onChange={handleNumberChange}/>
       </div>
       <div>
-        <button type="submit" onClick={handleNewPerson}>add</button>
+        <button type="submit" onClick={handleNewPerson}>Add</button>
       </div>
     </form>
+  )
+}
+
+const PersonList = ({ persons, filter, handleDeletePerson }) => {
+  console.log('drawing persons')
+  return (
+    <div>
+      {persons
+        .filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
+        .map(person => <p key={person.name}> {person.name} {person.number} <button onClick={() => handleDeletePerson(person.id)}>Delete</button> </p>)
+      }
+    </div>
   )
 }
 
@@ -33,13 +45,11 @@ const App = () => {
   const [ persons, setPersons ] = useState([]) 
 
   useEffect(() => {
+    console.log('effectin')
     personService
       .getAll()
-      .then(response => {
-        setPersons(response)
-      })
+      .then(response => setPersons(response))
   }, [])
-
 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
@@ -52,20 +62,24 @@ const App = () => {
       window.alert(`${foundPerson} is already added to phonebook`)
     } else {
       const newPerson = 
-        { name: newName , number: newNumber }
+        { name: newName, number: newNumber }
       personService
         .create(newPerson)
-        .then(response => {
-          setPersons(persons.concat(response))
-        })
+        .then(response => setPersons(persons.concat(response)))
     }
+  }
+
+  const handleDeletePerson = (id) => {
+    personService
+      .deletePerson(id)
+      .then(response => setPersons(response))
   }
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
-  
-  const handleNumberChange = (event) => {
+
+  const handleNumberChange  = (event) => {
     setNewNumber(event.target.value)
   }
 
@@ -79,7 +93,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <PersonForm handleNameChange={handleNameChange} newName={newName} handleNumberChange={handleNumberChange} newNumber={newNumber} handleNewPerson={handleNewPerson}/> 
       <h2>Numbers</h2>
-      {persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase())).map(person => <p key={person.name}>{person.name} {person.number}</p>)}
+      <PersonList persons={persons} filter={filter} handleDeletePerson={handleDeletePerson} />
     </div>
   )
 }
