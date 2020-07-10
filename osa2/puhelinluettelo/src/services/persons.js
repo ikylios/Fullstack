@@ -3,6 +3,7 @@ const baseUrl = 'http://localhost:3001/persons'
 
 const getAll = () => {
     const request = axios.get(baseUrl)
+    console.log(request.then(response => response.data))
     return request.then(response => response.data)
 }
 
@@ -12,9 +13,17 @@ const create = newPerson => {
     return request.then(response => response.data)
 }
 
-const deletePerson = deleteId => {
-    axios.delete(`${baseUrl}/${deleteId}`)
+const update = (id, changedPerson) => {
+    const request = axios.put(`${baseUrl}/${id}`, changedPerson)
+    .then(response => response.data)
+    console.log('eka logi', request.then(response => response.data))
+//    return request.then(response => response.data)
     return getAll()
 }
 
-export default { getAll, create, deletePerson }
+const deletePerson = id => {
+    axios.delete(`${baseUrl}/${id}`)
+    return getAll()
+}
+
+export default { getAll, create, deletePerson, update }

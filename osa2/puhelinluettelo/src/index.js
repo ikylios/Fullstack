@@ -57,9 +57,12 @@ const App = () => {
 
   const handleNewPerson = (event) => {
     event.preventDefault()
-    var foundPerson = persons.map(person => person.name).find(name => name === newName)
+    var foundPerson = persons.find(person => person.name === newName)
     if (foundPerson) {
-      window.alert(`${foundPerson} is already added to phonebook`)
+      if (window.confirm(`${foundPerson.name} is already added to phonebook. Replace the old number with a new one?`)) {
+        const changedPerson = {...foundPerson, number: newNumber}
+        handleUpdate(foundPerson.id, changedPerson)
+      }
     } else {
       const newPerson = 
         { name: newName, number: newNumber }
@@ -69,10 +72,19 @@ const App = () => {
     }
   }
 
-  const handleDeletePerson = (id) => {
+  const handleUpdate = (id, changedPerson) => {
     personService
-      .deletePerson(id)
+      .update(id, changedPerson)
       .then(response => setPersons(response))
+//      .then(response => setPersons(persons.map(person => person.id !== id ? person : response.data)))
+  }
+
+  const handleDeletePerson = (id) => {
+    if (window.confirm(`Delete ${persons.find(person => person.id === id).name}?`)) {
+      personService
+        .deletePerson(id)
+        .then(response => setPersons(response))
+    } 
   }
 
   const handleNameChange = (event) => {
