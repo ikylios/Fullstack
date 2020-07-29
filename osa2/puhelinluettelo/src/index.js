@@ -40,12 +40,35 @@ const PersonList = ({ persons, filter, handleDeletePerson }) => {
   )
 }
 
+const Notification = ({ message }) => {
+  const notifStyle = {
+    color: 'green',
+    background: 'lightgrey',
+    fontSize: 16,
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10
+  }
+
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div style={notifStyle}> 
+      {message}
+    </div>
+  )
+}
+
+
 const App = () => {
 
   const [ persons, setPersons ] = useState([]) 
+  const [ errorMessage, setErrorMessage ] = useState(null)
 
   useEffect(() => {
-    console.log('effectin')
     personService
       .getAll()
       .then(response => setPersons(response))
@@ -69,7 +92,15 @@ const App = () => {
       personService
         .create(newPerson)
         .then(response => setPersons(persons.concat(response)))
+      notif(`Added ${newName}!`)
     }
+  }
+
+  const notif = (message) => {
+    setErrorMessage(message)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
   }
 
   const handleUpdate = (id, changedPerson) => {
@@ -77,6 +108,7 @@ const App = () => {
       .update(id, changedPerson)
       .then(response => setPersons(response))
 //      .then(response => setPersons(persons.map(person => person.id !== id ? person : response.data)))
+      notif(`Changed number of ${changedPerson.name}!`)
   }
 
   const handleDeletePerson = (id) => {
@@ -84,6 +116,7 @@ const App = () => {
       personService
         .deletePerson(id)
         .then(response => setPersons(response))
+      notif(`Deleted ${persons.find(person => person.id === id).name}`)
     } 
   }
 
@@ -103,6 +136,7 @@ const App = () => {
     <div>
       <FilterForm handleFilterChange={handleFilterChange} filter={filter} />
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <PersonForm handleNameChange={handleNameChange} newName={newName} handleNumberChange={handleNumberChange} newNumber={newNumber} handleNewPerson={handleNewPerson}/> 
       <h2>Numbers</h2>
       <PersonList persons={persons} filter={filter} handleDeletePerson={handleDeletePerson} />
