@@ -29,7 +29,6 @@ const PersonForm = ({ newName, handleNameChange, newNumber, handleNumberChange, 
 }
 
 const PersonList = ({ persons, filter, handleDeletePerson }) => {
-  console.log('drawing persons')
   return (
     <div>
       {persons
@@ -67,16 +66,23 @@ const App = () => {
 
   const [ persons, setPersons ] = useState([]) 
   const [ errorMessage, setErrorMessage ] = useState(null)
+  
+  const [ newName, setNewName ] = useState('')
+  const [ newNumber, setNewNumber ] = useState('')
+  const [ filter, setFilter ] = useState('')
 
+  const notif = (message) => {
+    setErrorMessage(message)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+  }
+  
   useEffect(() => {
     personService
       .getAll()
       .then(response => setPersons(response))
   }, [])
-
-  const [ newName, setNewName ] = useState('')
-  const [ newNumber, setNewNumber ] = useState('')
-  const [ filter, setFilter ] = useState('')
 
   const handleNewPerson = (event) => {
     event.preventDefault()
@@ -96,27 +102,26 @@ const App = () => {
     }
   }
 
-  const notif = (message) => {
-    setErrorMessage(message)
-    setTimeout(() => {
-      setErrorMessage(null)
-    }, 5000)
-  }
-
   const handleUpdate = (id, changedPerson) => {
     personService
       .update(id, changedPerson)
-      .then(response => setPersons(response))
-//      .then(response => setPersons(persons.map(person => person.id !== id ? person : response.data)))
+      .then(response => {
+        setPersons(response)
+      })
+      .catch(error => {
+        console.log('error')
+//        notif(`Information of ${changedPerson.name} has already been removed from server`)
+      })
       notif(`Changed number of ${changedPerson.name}!`)
   }
 
   const handleDeletePerson = (id) => {
-    if (window.confirm(`Delete ${persons.find(person => person.id === id).name}?`)) {
+    const name = persons.find(person => person.id === id).name
+    if (window.confirm(`Delete ${name}?`)) {
       personService
         .deletePerson(id)
         .then(response => setPersons(response))
-      notif(`Deleted ${persons.find(person => person.id === id).name}`)
+      notif(`Deleted ${name}`)
     } 
   }
 
