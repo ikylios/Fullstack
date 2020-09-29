@@ -29,6 +29,7 @@ const PersonForm = ({ newName, handleNameChange, newNumber, handleNumberChange, 
 }
 
 const PersonList = ({ persons, filter, handleDeletePerson }) => {
+  console.log(persons)
   return (
     <div>
       {persons
@@ -75,7 +76,7 @@ const App = () => {
     setErrorMessage(message)
     setTimeout(() => {
       setErrorMessage(null)
-    }, 5000)
+    }, 6000)
   }
   
   useEffect(() => {
@@ -97,8 +98,13 @@ const App = () => {
         { name: newName, number: newNumber }
       personService
         .create(newPerson)
-        .then(response => setPersons(persons.concat(response)))
-      notif(`Added ${newName}!`)
+        .then(response => {
+          setPersons(persons.concat(response))
+          notif(`Added ${newName}!`)
+        })
+        .catch(error => {
+          notif(error.response.data.error)
+        })
     }
   }
 
@@ -120,7 +126,9 @@ const App = () => {
     if (window.confirm(`Delete ${name}?`)) {
       personService
         .deletePerson(id)
-        .then(response => setPersons(response))
+        .then(response => {
+          setPersons(response)
+        })
       notif(`Deleted ${name}`)
     } 
   }
