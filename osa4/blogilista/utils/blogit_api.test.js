@@ -52,6 +52,27 @@ test('id of blog is called id', async () => {
     }
 })
 
-afterAll(() => {
+test('empty likes is set to 0', async () => {
+    const newBlog = {
+        title: 'new',
+        author: 'me',
+        url: 'rlylongurl',
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+    
+    const response = await api.get('/api/blogs')
+    const blog = response.body[listHelper.initBlogs.length]
+
+    expect(blog.likes).toBeDefined()
+    expect(blog.likes).toBe(0)
+
+})
+
+    afterAll(() => {
     mongoose.connection.close()
 })
