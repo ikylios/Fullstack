@@ -38,28 +38,19 @@ test('adding valid blog works', async () => {
 
     const response = await api.get('/api/blogs')
 
-    const contents = response.body.map(r => r.url)
+//    const contents = response.body.map(r => r.url)
 
     expect(response.body).toHaveLength(listHelper.initBlogs.length + 1)
 })
 
-/* 4.9
+// 4.9
 test('id of blog is called id', async () => {
     const response = await api.get('/api/blogs')
 
-    //console.log(response)
-/*
-    response.set('toJSON', {
-        transform: (document, returnedObject) => {
-          returnedObject.id = returnedObject._id.toString()
-          delete returnedObject._id
-          delete returnedObject.__v
-        }
-      })
-
-    expect(response).toBeDefined()
+    for (i = 0; i < response.body.length; i++) {
+        expect(response.body[i].id).toBeDefined()
+    }
 })
-*/
 
 afterAll(() => {
     mongoose.connection.close()
