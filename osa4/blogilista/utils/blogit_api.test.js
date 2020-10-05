@@ -38,8 +38,6 @@ test('adding valid blog works', async () => {
 
     const response = await api.get('/api/blogs')
 
-//    const contents = response.body.map(r => r.url)
-
     expect(response.body).toHaveLength(listHelper.initBlogs.length + 1)
 })
 
@@ -56,14 +54,13 @@ test('empty likes is set to 0', async () => {
     const newBlog = {
         title: 'new',
         author: 'me',
-        url: 'rlylongurl',
+        url: 'rlylongurl'
     }
 
     await api
         .post('/api/blogs')
         .send(newBlog)
         .expect(201)
-        .expect('Content-Type', /application\/json/)
     
     const response = await api.get('/api/blogs')
     const blog = response.body[listHelper.initBlogs.length]
@@ -72,6 +69,20 @@ test('empty likes is set to 0', async () => {
     expect(blog.likes).toBe(0)
 
 })
+
+test('no title no url is not accepted', async () => {
+    const newBlog = {
+        author: 'me',
+        likes: 5
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+
+})
+
 
     afterAll(() => {
     mongoose.connection.close()
