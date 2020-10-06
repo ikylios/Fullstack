@@ -35,10 +35,8 @@ test('adding valid blog works', async () => {
         .post('/api/blogs')
         .send(newBlog)
         .expect(201)
-        .expect('Content-Type', /application\/json/)
 
     const response = await api.get('/api/blogs')
-
     expect(response.body).toHaveLength(listHelper.initBlogs.length + 1)
 })
 
