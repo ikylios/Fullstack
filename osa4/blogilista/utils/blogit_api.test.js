@@ -7,7 +7,6 @@ const api = supertest(app)
 
 beforeEach(async () => {
     await Blog.deleteMany({})
-
     const blogObjects = listHelper.initBlogs
     .map(blog => new Blog(blog))
     const promiseArray = blogObjects.map(blog => blog.save())
@@ -17,9 +16,11 @@ beforeEach(async () => {
 
 
 test('notes returned as json', async () => {
-    const response = await api.get('/api/blogs')
-
-    expect(response.body).toHaveLength(listHelper.initBlogs.length)
+    const response = await api
+        .get('/api/blogs')
+        .expect('Content-Type', /application\/json/)
+    
+        expect(response.body).toHaveLength(listHelper.initBlogs.length)
 })
 
 test('adding valid blog works', async () => {
@@ -82,8 +83,11 @@ test('no title no url is not accepted', async () => {
         .expect(400)
 
 })
-
-
-    afterAll(() => {
+/*
+test('able to create and delete blog', async () => { 
+    
+})
+*/
+afterAll(() => {
     mongoose.connection.close()
 })
