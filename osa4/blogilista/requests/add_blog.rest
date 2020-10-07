@@ -2,8 +2,9 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json 
 
 {
-    "title": "React patterns",
-    "author": "Michael Chan",
-    "url": "https://reactpatterns.com/",
-    "likes": 10
+    "title": "stuff1",
+    "author": "guy guy1",
+    "url": "yeah",
+    "likes": 420,
+    "userId": "5f7df5856317c807b4b73dd5"
 }
