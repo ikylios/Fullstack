@@ -44,7 +44,9 @@ const dummy = (blogs) => {
 
   const mostLikes = (blogs) => {
     const mostLiked = lod.maxBy(blogs, function(o) { return o.likes })
-    const result = { author: mostLiked.author, likes: mostLiked.likes }
+    const authorBlogs = lod.filter(blogs, { 'author': mostLiked.author })
+    const sumLikes = lod.sumBy(authorBlogs, 'likes')
+    const result = { author: mostLiked.author, likes: sumLikes }
     return result
   }
 
