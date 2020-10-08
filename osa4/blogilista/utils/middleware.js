@@ -10,6 +10,8 @@ const requestLogger = (request, response, next) => {
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
+
+  next()
 }
 
 const errorHandler = (error, request, response, next) => {
@@ -24,8 +26,26 @@ const errorHandler = (error, request, response, next) => {
   next(error)
 }
 
+const tokenExtractor = (request, response, next) => {
+  let dtoken = null 
+  const authorization = request.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    dtoken = authorization.substring(7)
+  }
+/*
+  const newRequest = request
+  newRequest.token = dtoken 
+*/
+  request.token = dtoken
+  return request
+
+  // MATSKUN MUKAAN NEXT() METODI ON PAKKO OLLA MUT ERRORIA HEITTÄÄ ETTÄ NEXT() EI OLE FUNKTIO
+  //next()
+}
+
 module.exports = {
   requestLogger,
   unknownEndpoint,
-  errorHandler
+  errorHandler,
+  tokenExtractor
 }

@@ -3,8 +3,8 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtheXRzMiIsImlkIjoiNWY3ZTAzMDlkZGFmZTIxYmExYThkYTM4IiwiaWF0IjoxNjAyMDk0NzYyfQ.5nThpS-SY0qewieMETjuo0LyiEjWTSMKIT4sG4wCpbc
 
 {
-    "title": "stuff2",
-    "author": "guy",
-    "url": "urlll",
+    "title": "s2",
+    "author": "g",
+    "url": "ur",
     "likes": 2
 }

@@ -1,3 +1,5 @@
+const lod = require('lodash')
+
 const listWithZeroBlogs = []
 const listWithOneBlog = [{_id: '5a422aa71b54a676234d17f8', title: 'Go To Statement Considered Harmful', author: 'Edsger W. Dijkstra', url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considere_Harmful.html', likes: 5, __v: 0 }]
 const initBlogs = [ { _id: "5a422a851b54a676234d17f7", title: "React patterns", author: "Michael Chan", url: "https://reactpatterns.com/", likes: 7, __v: 0 },
@@ -7,6 +9,7 @@ const initBlogs = [ { _id: "5a422a851b54a676234d17f7", title: "React patterns", 
     { _id: "5a422ba71b54a676234d17fb", title: "TDD harms architecture", author: "Robert C. Martin", url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html", likes: 0, __v: 0 }, 
     { _id: "5a422bc61b54a676234d17fc", title: "Type wars", author: "Robert C. Martin", url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html", likes: 2, __v: 0 }
 ]
+
 
 const dummy = (blogs) => {
    return 1 
@@ -32,10 +35,25 @@ const dummy = (blogs) => {
     return fav
   }
 
+  const mostBlogs = (blogs) => {
+    const authors = lod.countBy(blogs, 'author')
+    const mostPopular = lod.max(Object.keys(authors), function (o) { return obj[o] })
+    const result = { author: mostPopular, blogs: authors[mostPopular]}
+    return result
+  }
+
+  const mostLikes = (blogs) => {
+    const mostLiked = lod.maxBy(blogs, function(o) { return o.likes })
+    const result = { author: mostLiked.author, likes: mostLiked.likes }
+    return result
+  }
+
   module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
+    mostBlogs,
+    mostLikes,
     listWithZeroBlogs,
     listWithOneBlog,
     initBlogs
