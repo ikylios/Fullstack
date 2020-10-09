@@ -1,3 +1,4 @@
+const { sum, forEach, sumBy } = require('lodash')
 const lod = require('lodash')
 
 const listWithZeroBlogs = []
@@ -43,11 +44,21 @@ const dummy = (blogs) => {
   }
 
   const mostLikes = (blogs) => {
-    const mostLiked = lod.maxBy(blogs, function(o) { return o.likes })
-    const authorBlogs = lod.filter(blogs, { 'author': mostLiked.author })
-    const sumLikes = lod.sumBy(authorBlogs, 'likes')
-    const result = { author: mostLiked.author, likes: sumLikes }
-    return result
+    const authors = []
+    let maxName = { 'author':blogs[0].author }
+    for (let i = 0; i < blogs.length; i++) {
+      const authorName = blogs[i].author
+      let likes = blogs[i].likes
+      if (authors[authorName]) {
+        likes += authors[authorName]
+      }
+      authors[authorName] = likes
+      if (likes > authors[maxName.author]) {
+        maxName = { 'author':authorName, 'likes':likes }
+      }
+    }
+    
+    return maxName 
   }
 
   module.exports = {
