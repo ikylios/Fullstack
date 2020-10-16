@@ -11,6 +11,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -26,6 +27,36 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+const Notification = ({ message }) => {
+  const notifStyle = {
+    color: 'green',
+    background: 'lightgrey',
+    fontSize: 16,
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10
+  }
+
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div style={notifStyle}> 
+      {message}
+    </div>
+  )
+}
+  
+  const notif = (message) => {
+    setMessage(message)
+    setTimeout(() => {
+      setMessage(null)
+    }, 6000)
+  }
+
 
   const LoginForm = () => {
     return (
@@ -52,6 +83,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
+      notif('wrong username or password')
       console.log('eror')
     }
   }
@@ -92,6 +124,7 @@ const App = () => {
 
     const response = await blogService.create(newBlog)
     setBlogs(blogs.concat(response))
+    notif(`Added a new blog ${newBlog.title} by ${newBlog.author}!`)
   }
 
   const blogList = () => {
@@ -110,11 +143,11 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={message} />
       {user === null ? 
          LoginForm() : 
          blogList() 
       } 
-
     </div>
   )
 }
