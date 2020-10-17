@@ -12,6 +12,7 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [message, setMessage] = useState(null)
+  const [createVisible, setCreateVisible] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -100,15 +101,27 @@ const Notification = ({ message }) => {
   }
 
   const BlogForm = () => {
+    const hideWhenVisible = { display: createVisible ? 'none' : '' }
+    const showWhenVisible = { display: createVisible ? '' : 'none' }
+
     return (
       <div>
-        <h2>create new</h2>
-        <form onSubmit={handleNewBlog}>
-          <div> title: <input value={title} onChange={ ({ target }) => setTitle(target.value)}/></div>
-          <div> author: <input value={author} onChange={ ({ target }) => setAuthor(target.value)}/></div>
-          <div> url: <input value={url} onChange={ ({ target }) => setUrl(target.value)}/></div>
-          <button type="submit">create</button>
-        </form>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setCreateVisible(true)}>create new blog</button>
+        </div>
+        <div style={showWhenVisible}>
+          <h2>create new</h2>
+          <form onSubmit={() => {
+            setCreateVisible(false)
+            handleNewBlog() }
+          }>
+            <div> title: <input value={title} onChange={ ({ target }) => setTitle(target.value)}/></div>
+            <div> author: <input value={author} onChange={ ({ target }) => setAuthor(target.value)}/></div>
+            <div> url: <input value={url} onChange={ ({ target }) => setUrl(target.value)}/></div>
+            <button type="submit">create</button>
+          </form>
+          <button onClick={() => setCreateVisible(false)}>cancel</button>
+        </div>
       </div>
     )
   }
@@ -135,13 +148,13 @@ const Notification = ({ message }) => {
         <h2>blogs</h2>
         {BlogForm()}
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} />
         )}
      </div>
     )
   }
 
-  return (
+  return(
     <div>
       <Notification message={message} />
       {user === null ? 
