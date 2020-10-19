@@ -82,6 +82,16 @@ const App = () => {
     notif(`Added a new blog ${newBlog.title} by ${newBlog.author}!`)
   }
 
+  const addLike = async (blog) => {
+    const blogId = blog.id
+    const oldBlog = blogs.find(b => b.id === blogId)
+    oldBlog.likes = oldBlog.likes + 1
+    const updatedBlog = oldBlog
+
+    const response = await blogService.like(updatedBlog)
+    setBlogs(blogs.map(blog => blog.id !== blogId ? blog: response))
+  }
+
 
   const blogForm = () => (
     <Togglable buttonLabel='create new blog' ref={blogFormRef}>
@@ -98,7 +108,7 @@ const App = () => {
         <h2>blogs</h2>
         {blogForm()}
         {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} addLike={addLike} />
         )}
      </div>
     )
