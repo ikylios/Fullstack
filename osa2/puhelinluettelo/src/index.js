@@ -112,7 +112,7 @@ const App = () => {
     personService
       .update(id, changedPerson)
       .then(response => {
-        setPersons(response)
+        setPersons(persons.map(person => person.id !== id ? person: response))
       })
       .catch(error => {
         console.log('error')
@@ -126,9 +126,7 @@ const App = () => {
     if (window.confirm(`Delete ${name}?`)) {
       personService
         .deletePerson(id)
-        .then(response => {
-          setPersons(response)
-        })
+      setPersons(persons.filter(p => p.id !== id))
       notif(`Deleted ${name}`)
     } 
   }
