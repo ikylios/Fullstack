@@ -77,7 +77,6 @@ const App = () => {
 
   const handleNewBlog = async (newBlog) => {
     blogFormRef.current.toggleVisibility()
-    console.log('in app.js')
     const response = await blogService.create(newBlog)
     setBlogs(blogs.concat(response))
     notif(`Added a new blog ${newBlog.title} by ${newBlog.author}!`)
@@ -90,10 +89,16 @@ const App = () => {
     const updatedBlog = oldBlog
 
     const response = await blogService.like(updatedBlog)
+    console.log(response)
     setBlogs(blogs.map(blog => blog.id !== blogId ? blog: response))
     setBlogs(blogs.sort(function(a, b) {
       return b.likes - a.likes
     }))
+  }
+
+  const deleteBlog = async (blog) => {
+    await blogService.deleteBlog(blog.id)
+    setBlogs(blogs.filter(b => b.id !== blog.id))
   }
 
 
@@ -112,7 +117,7 @@ const App = () => {
         <h2>blogs</h2>
         {blogForm()}
         {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} addLike={addLike} />
+        <Blog key={blog.id} blog={blog} addLike={addLike} deleteBlog={deleteBlog} userId={user.id}/>
         )}
      </div>
     )

@@ -7,7 +7,6 @@ import React, {useState} from 'react'
     const [url, setUrl] = useState('')
 
     const createBlog = (event) => {
-        console.log('entered create')
         event.preventDefault()
         const newBlog = {
         title: title,

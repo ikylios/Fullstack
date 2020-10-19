@@ -27,4 +27,9 @@ const like = async (updatedBlog) => {
   return request.data
 }
 
-export default { getAll, setToken, create, like }
+const deleteBlog = async (id) => {
+  const request = await axios.delete(`${baseUrl}/${id}`)
+  return request.data
+}
+
+export default { getAll, setToken, create, like, deleteBlog }
