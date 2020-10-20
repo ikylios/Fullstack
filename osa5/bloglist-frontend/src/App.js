@@ -16,9 +16,9 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-    setBlogs(blogs.sort(function(a, b) {
-      return b.likes - a.likes
-    })))
+      setBlogs(blogs.sort(function(a, b) {
+        return b.likes - a.likes
+      })))
   }, [])
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
- 
+
   const notif = (message) => {
     setMessage(message)
     setTimeout(() => {
@@ -42,11 +42,11 @@ const App = () => {
     return (
       <div>
         <h2>login to app</h2>
-          <form onSubmit={handleLogin}>
-            <div>username <input value={username} onChange={ ({ target }) => setUsername(target.value)}/></div>
-            <div>password <input value={password} onChange={ ({ target }) => setPassword(target.value)}/></div>
-            <button type="submit">login</button>
-          </form>
+        <form onSubmit={handleLogin}>
+          <div>username <input value={username} onChange={ ({ target }) => setUsername(target.value)}/></div>
+          <div>password <input value={password} onChange={ ({ target }) => setPassword(target.value)}/></div>
+          <button type="submit">login</button>
+        </form>
       </div>
     )
   }
@@ -70,8 +70,8 @@ const App = () => {
 
   const handleLogout = async (event) => {
     event.preventDefault()
-      setUser(null)
-      window.localStorage.removeItem('loggedUser')
+    setUser(null)
+    window.localStorage.removeItem('loggedUser')
   }
 
 
@@ -104,7 +104,7 @@ const App = () => {
 
   const blogForm = () => (
     <Togglable buttonLabel='create new blog' ref={blogFormRef}>
-      <BlogForm 
+      <BlogForm
         handleNewBlog={handleNewBlog} />
     </Togglable>
   )
@@ -112,25 +112,25 @@ const App = () => {
   const blogList = () => {
     const username = user.username
     return (
-     <div>
+      <div>
         <p>{user.name} logged in</p>
         <button type="submit" onClick={handleLogout}>logout</button>
         <h2>blogs</h2>
         {blogForm()}
         {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} addLike={addLike} deleteBlog={deleteBlog} username={username}/>
+          <Blog key={blog.id} blog={blog} addLike={addLike} deleteBlog={deleteBlog} username={username}/>
         )}
-     </div>
+      </div>
     )
   }
 
   return(
     <div>
       <Notification message={message} />
-      {user === null ? 
-         LoginForm() : 
-         blogList() 
-      } 
+      {user === null ?
+        LoginForm() :
+        blogList()
+      }
     </div>
   )
 }

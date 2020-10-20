@@ -16,10 +16,10 @@ const Notification = ({ message }) => {
   }
 
   return (
-    <div style={notifStyle}> 
+    <div style={notifStyle}>
       {message}
     </div>
   )
 }
 
-export default Notification 
+export default Notification
