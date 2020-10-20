@@ -110,6 +110,7 @@ const App = () => {
   )
 
   const blogList = () => {
+    const username = user.username
     return (
      <div>
         <p>{user.name} logged in</p>
@@ -117,7 +118,7 @@ const App = () => {
         <h2>blogs</h2>
         {blogForm()}
         {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} addLike={addLike} deleteBlog={deleteBlog} userId={user.id}/>
+        <Blog key={blog.id} blog={blog} addLike={addLike} deleteBlog={deleteBlog} username={username}/>
         )}
      </div>
     )

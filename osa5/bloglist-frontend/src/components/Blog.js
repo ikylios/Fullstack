@@ -1,7 +1,9 @@
 import React from 'react'
-const Blog = ({ blog, addLike, deleteBlog, userId }) => {
-    const ownBlog = blog.userId === userId
-    const visibleRemoveButton= { display: ownBlog ? 'none' : ''}
+import PropTypes from 'prop-types'
+
+
+const Blog = ({ blog, addLike, deleteBlog, username }) => {
+    const visibleRemoveButton= { display: blog.userId.username === username ? '' : 'none'}
 
   return (
     <div>
@@ -12,5 +14,12 @@ const Blog = ({ blog, addLike, deleteBlog, userId }) => {
     </div>
   </div>
 )}
+
+  Blog.displayName = 'Blog'
+  Blog.propTypes = {
+    addLike: PropTypes.func.isRequired,
+    deleteBlog: PropTypes.func.isRequired,
+    username: PropTypes.string.isRequired
+  }
 
 export default Blog
