@@ -13,6 +13,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState(null)
   const blogFormRef = useRef()
+  const blogRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -118,7 +119,7 @@ const App = () => {
         <h2>blogs</h2>
         {blogForm()}
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} addLike={addLike} deleteBlog={deleteBlog} username={username}/>
+          <Blog key={blog.id} blog={blog} addLike={addLike} deleteBlog={deleteBlog} username={username} ref={blogRef}/>
         )}
       </div>
     )
