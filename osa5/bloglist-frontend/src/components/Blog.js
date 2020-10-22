@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Togglable from './Togglable'
 
 
-const Blog = React.forwardRef(({ blog, addLike, deleteBlog, username}, ref) => {
+const Blog = React.forwardRef(({ blog, addLike, deleteBlog, username }, ref) => {
 
   const blogStyle = {
     paddingTop: 10,
