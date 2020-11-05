@@ -44,9 +44,9 @@ const App = () => {
       <div>
         <h2>login to app</h2>
         <form onSubmit={handleLogin}>
-          <div>username <input value={username} onChange={ ({ target }) => setUsername(target.value)}/></div>
-          <div>password <input value={password} onChange={ ({ target }) => setPassword(target.value)}/></div>
-          <button type="submit">login</button>
+          <div>username <input id="username" value={username} onChange={ ({ target }) => setUsername(target.value)}/></div>
+          <div>password <input id="password" value={password} onChange={ ({ target }) => setPassword(target.value)}/></div>
+          <button id="login-button" type="submit">login</button>
         </form>
       </div>
     )
@@ -65,7 +65,6 @@ const App = () => {
       setPassword('')
     } catch (exception) {
       notif('wrong username or password')
-      console.log('eror')
     }
   }
 
