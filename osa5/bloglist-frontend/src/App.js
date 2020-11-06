@@ -89,7 +89,6 @@ const App = () => {
     const updatedBlog = oldBlog
 
     const response = await blogService.like(updatedBlog)
-    console.log(response)
     setBlogs(blogs.map(blog => blog.id !== blogId ? blog: response))
     setBlogs(blogs.sort(function(a, b) {
       return b.likes - a.likes

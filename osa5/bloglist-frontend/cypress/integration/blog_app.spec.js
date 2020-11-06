@@ -51,7 +51,7 @@ describe('Login', function() {
       cy.contains('testtitle testauthor')
     })
 
-    it.only('A blog can be liked', function() {
+    it('Created blog can be deleted', function() {
       cy.create_blog({ title: 'testtitle', author: 'testauthor', url:'testurl'})
 
       cy.contains('view').click()
@@ -62,8 +62,18 @@ describe('Login', function() {
       cy.contains('like').click()
       cy.contains('likes:3')
     })
+    
+    it.only('A blog can be removed', function() {
+      cy.create_blog({ title: 'testtitle', author: 'testauthor', url:'testurl'})
+
+      cy.contains('view').click()
+      cy.contains('remove').click()
+      cy.get('html').should('not.contain', 'testtitle')
+      cy.get('html').should('not.contain', 'testauthor')
+      cy.get('html').should('not.contain', 'testurl')
+    })
 
   })
-  
+
   
 })
