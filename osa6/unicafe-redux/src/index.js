@@ -39,6 +39,9 @@ const App = () => {
       <div>good {store.getState().good}</div>
       <div>neutral {store.getState().ok}</div>
       <div>bad {store.getState().bad}</div>
+      <div>all {store.getState().all}</div>
+      <div>average {store.getState().avg}</div>
+      <div>positive {store.getState().pos}%</div>
     </div>
   )
 }
