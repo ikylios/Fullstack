@@ -13,3 +13,9 @@
 
 
 [Osa 4](https://github.com/ikylios/Fullstack/tree/master/osa4)
+
+
+[Osa 5](https://github.com/ikylios/Fullstack/tree/master/osa5)
+
+
+[Osa 6](https://github.com/ikylios/Fullstack/tree/master/osa6)
