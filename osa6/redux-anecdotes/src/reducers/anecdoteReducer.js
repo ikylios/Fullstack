@@ -1,3 +1,4 @@
+/*
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -18,7 +19,7 @@ const asObject = (anecdote) => {
 }
 
 //const initialState = anecdotesAtStart.map(asObject)
-
+*/
 const reducer = (state = [], action) => {
 
   switch(action.type) {
@@ -54,10 +55,10 @@ export const vote = ({ id, content }) => {
   }
 }
 
-export const createAnecdote = (content) => {
+export const createAnecdote = (data) => {
   return {
     type: 'NEW_ANEC',
-    data: asObject(content)
+    data
   }
 }
 
