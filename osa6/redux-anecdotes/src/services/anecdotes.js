@@ -13,5 +13,9 @@ const createNew = async (content) => {
     const response = await axios.post(baseUrl, object)
     return response.data
 }
-  
+/*
+const voteAnecdote = async (content) => {
+    const object = { }
+}*/ 
+
   export default { getAll, createNew }

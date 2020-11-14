@@ -9,6 +9,7 @@ import anecdoteService from './services/anecdotes'
 
 const App = () => {
   const dispatch = useDispatch()
+  
   useEffect(() => {
       dispatch(initializeAnecdotes())
   }, [dispatch])

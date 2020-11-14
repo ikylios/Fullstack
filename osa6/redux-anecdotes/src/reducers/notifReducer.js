@@ -1,35 +1,25 @@
 
 const initialState = 
-    { 
-        message: null,
-        content: null,
-        visible: false
-    }
+  { 
+    content: null,
+    visible: false
+  }
 
 
 
 const notifReducer = (state = initialState, action) => {
-//    console.log('action.data is now', action.data)
+    console.log('notif action.data is', action)
 
-  switch(action.type) {
-    case 'VOTE':
-      state = { 
-          message: 'you voted for',
-          content: `'${action.data.content}'`,
-          visible: true
-      }
-      return state 
-  
-    case 'CLEAR':
-      state = initialState 
-      return state 
-
-    case 'NEW_ANEC':
+    switch(action.type) {
+    case 'NOTIF':
       state = {
-        message: 'created new anecdote',
-        content: `'${action.data.content}'`,
+        content: action.data.content,
         visible: true
       }
+      return state 
+    
+    case 'CLEAR':
+      state = initialState 
       return state 
       
     default: return state
@@ -37,7 +27,7 @@ const notifReducer = (state = initialState, action) => {
 
 }
 
-export const voteNotif = ({ content }) => {
+export const voteNotif = ( content ) => {
 //    console.log('content is', anecdote.content)
   return {
     type: 'VOTE',
@@ -45,18 +35,34 @@ export const voteNotif = ({ content }) => {
   }
 }
 
-export const createNotif = ({ content }) => {
+export const createNotif = ( content ) => {
 //    console.log('content is', anecdote.content)
   return {
-    type: 'NEW_ANEC',
+    type: 'NEW_ANECDOTE',
     data: { content }
   }
 }
 
 export const clearMessage = () => {
-  return {
-    type: 'CLEAR',
-    data: {}
+  return async dispatch => {
+    dispatch({
+      type: 'CLEAR',
+      data: {}
+    })
+  }
+}
+
+export const setNotification =  (content, time) => {  
+//  console.log('content is', content)
+  return async dispatch => {
+    dispatch({
+      type: 'NOTIF',
+      data: { content }
+    })
+  setTimeout(() => {
+    dispatch(clearMessage())
+  }, time*1000)
+  
   }
 }
 

@@ -14,7 +14,7 @@ const Notification = () => {
   if (notification.visible) {
     return (
     <div style={style}>
-      {notification.message} {notification.content}
+      {notification.content} 
     </div>
     )
   }
