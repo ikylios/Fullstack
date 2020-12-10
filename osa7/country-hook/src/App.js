@@ -17,18 +17,10 @@ const useField = (type) => {
 
 const useCountry = (name) => {
   const [country, setCountry] = useState(null)
-  console.log('name in useCountry:', name)
-/*
-  const nameIsDefined = () => {
-    if (name === "") {
-      return false
-    }
-    return true 
-  }
-*/  
+//  console.log('name in useCountry:', name)
 
   useEffect(() => {
-  console.log('name in useEffect:', name)
+//  console.log('name in useEffect:', name)
   if (name) {
     axios
       .get(`https://restcountries.eu/rest/v2/name/${name}?fullText=true`)
@@ -44,7 +36,7 @@ const useCountry = (name) => {
   }, [name])
 
 
-  console.log('countryaftersearch:', country)
+//  console.log('countryaftersearch:', country)
 
   return country
 }
@@ -77,13 +69,13 @@ const App = () => {
   const [name, setName] = useState(null)
   const country = useCountry(name)
 
-  console.log('country in app:', country)
+//  console.log('country in app:', country)
 
   const fetch = (e) => {
     e.preventDefault()
-    console.log('nameInput:', nameInput)
+//    console.log('nameInput:', nameInput)
     setName(nameInput.value)
-    console.log('name:', name)
+//    console.log('name:', name)
   }
 
   return (
