@@ -17,15 +17,17 @@ const Blog = React.forwardRef(({ blog, addLike, deleteBlog, username }, ref) => 
 
   return (
     <div style={blogStyle}>
+      <li className='blog'>
       {blog.title}  {blog.author}
       <Togglable buttonLabel='view' ref={ref}>
         url:{blog.url}<br></br>
-        likes:{blog.likes}
+        <span id='likes'>likes:{blog.likes}</span>
         <button className="likeButton" onClick={() => addLike(blog)}>like!</button>
         <div style={visibleRemoveButton}>
           <button onClick={() => deleteBlog(blog)}>remove</button>
         </div>
       </Togglable>
+      </li>
     </div>
   )})
 
