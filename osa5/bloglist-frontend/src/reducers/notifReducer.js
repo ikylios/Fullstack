@@ -52,7 +52,7 @@ export const clearMessage = () => {
 }
 
 export const setNotification =  (content, time) => {  
-  console.log('content is', content)
+//  console.log('content is', content)
   return async dispatch => {
     dispatch({
       type: 'NOTIF',

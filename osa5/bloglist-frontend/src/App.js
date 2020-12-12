@@ -5,15 +5,17 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
+import { useDispatch } from 'react-redux'
+import { setNotification } from './reducers/notifReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [message, setMessage] = useState(null)
   const blogFormRef = useRef()
   const blogRef = useRef()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -30,14 +32,6 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-
-  const notif = (message) => {
-    setMessage(message)
-    setTimeout(() => {
-      setMessage(null)
-    }, 6000)
-  }
-
 
   const LoginForm = () => {
     return (
@@ -64,7 +58,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      notif('wrong username or password')
+      dispatch(setNotification('wrong username or password', 5))
     }
   }
 
@@ -79,7 +73,6 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
     const response = await blogService.create(newBlog)
     setBlogs(blogs.concat(response))
-//    notif(`Added a new blog ${newBlog.title} by ${newBlog.author}!`)
   }
 
   const addLike = async (blog) => {
