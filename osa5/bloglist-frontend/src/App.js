@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
+import UsersInfo from './components/UsersInfo'
 import Togglable from './components/Togglable'
 import { useDispatch } from 'react-redux'
 import { setNotification } from './reducers/notifReducer'
@@ -104,8 +106,6 @@ const App = () => {
   const blogList = () => {
     return (
       <div>
-        <p>{user.name} logged in</p>
-        <button type="submit" onClick={handleLogout}>logout</button>
         <h2>blogs</h2>
         {blogForm()}
         {blogs.map(blog =>
@@ -115,13 +115,46 @@ const App = () => {
     )
   }
 
+  const Menu = () => {
+    const padding = {
+      paddingRight: 5,
+      paddingTop: 5,
+      paddingBottom: 5,
+      paddingLeft: 5,
+      backgroundColor: 'lightgray'
+    }
+    
+    return (
+      <div>
+        <Link style={padding} to="/">blogs</Link>
+        <Link style={padding} to="/users">users</Link>
+        <span style={padding}> {user.name} logged in</span>
+          <button type="submit" onClick={handleLogout}>logout</button>
+      </div>
+    )
+  }
+  
+  
   return(
     <div>
-      <Notification />
-      {user === null ?
-        LoginForm() :
-        blogList()
-      }
+      <Router>
+        { user === null ? null : Menu() }
+        <Notification />
+        
+        <Switch>
+
+          <Route path="/users">
+            <UsersInfo />
+          </Route>
+          <Route path="/">
+            {user === null ?
+              LoginForm() :
+              blogList()
+            }
+          </Route>
+        </Switch>
+        
+      </Router> 
     </div>
   )
 }

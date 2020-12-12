@@ -25,22 +25,6 @@ const notifReducer = (state = initialState, action) => {
   }
 
 }
-/*
-export const voteNotif = ( content ) => {
-//    console.log('content is', anecdote.content)
-  return {
-    type: 'VOTE',
-    data: { content }
-  }
-}
-*/
-export const createNotif = ( content ) => {
-//    console.log('content is', anecdote.content)
-  return {
-    type: 'NEW_BLOG',
-    data: { content }
-  }
-}
 
 export const clearMessage = () => {
   return async dispatch => {
