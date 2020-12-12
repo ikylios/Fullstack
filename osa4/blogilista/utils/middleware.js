@@ -26,28 +26,20 @@ const errorHandler = (error, request, response, next) => {
   next(error)
 }
 
-/* 4.20
+// 4.20
 const tokenExtractor = (request, response, next) => {
-  let dtoken = null 
   const authorization = request.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    dtoken = authorization.substring(7)
+    request.token = authorization.substring(7)
   }
 
-//  const newRequest = request
-//  newRequest.token = dtoken 
-
-  request.token = dtoken
-  return request
-
-  // MATSKUN MUKAAN NEXT() METODI ON PAKKO OLLA MUT ERRORIA HEITTÄÄ ETTÄ NEXT() EI OLE FUNKTIO
-  //next()
+  next()
 }
-*/
+//*/
 
 module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,
-//  tokenExtractor
+  tokenExtractor
 }
