@@ -47,6 +47,7 @@ const App = () => {
       </div>
     )
   }
+
   const handleLogin = async (event) => {
     event.preventDefault()
 
@@ -75,6 +76,7 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
     const response = await blogService.create(newBlog)
     setBlogs(blogs.concat(response))
+    console.log('blogs after new blog:', blogs)
   }
 
   const addLike = async (blog) => {
