@@ -7,7 +7,7 @@ const initialState =
 
 
 const notifReducer = (state = initialState, action) => {
-    console.log('notif action.data is', action)
+//    console.log('notif action.data is', action)
 
     switch(action.type) {
     case 'NOTIF':
