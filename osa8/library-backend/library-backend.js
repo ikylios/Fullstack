@@ -25,6 +25,10 @@ let authors = [
     name: 'Sandi Metz', // birthyear not known
     id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
   },
+  { 
+    name: 'Reijo Mäki', // birthyear not known
+    id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
+  },
 ]
 
 /*
@@ -82,6 +86,13 @@ let books = [
     id: "afa5de04-344d-11e9-a414-719c6709cf3e",
     genres: ['classic', 'revolution']
   },
+  {
+    title: 'Pimeyden tango',
+    published: 1997,
+    author: 'Reijo Mäki',
+    id: "afa5de04-344d-11e9-a414-719c6709cf3e",
+    genres: ['crime']
+  },
 ]
 
 const typeDefs = gql`
@@ -114,6 +125,10 @@ const typeDefs = gql`
       published: Int!
       genres: [String!]!
     ): Book
+    editAuthor(
+      name: String
+      setBornTo: Int!
+    ): Author
   }
 `
 
@@ -137,23 +152,27 @@ const resolvers = {
     authorCount: () => authors.length,
     allAuthors: () => authors 
   },
+  
   Author: {
     name: (root) => root.name,
     bookCount: (root) => books.filter(b => b.author === root.name).length
   },
+  
   Mutation: {
     addBook: (root, args) => {
       const newBook = {...args}
       books = books.concat(newBook)
       if (!authors.includes(args.author)) {
-        authors = authors.concat(
-          {
-            name: args.author, 
-            id: uuid()
-          })
-        console.log(authors)
+        authors = authors.concat({name: args.author, id: uuid()})
       }
       return newBook
+    },
+    editAuthor: (root, args) => {
+      const author = authors.find(a => a.name === args.name)
+      if (!author) { return null }
+      const updatedAuthor = {...author, born: args.setBornTo}
+      authors = authors.map(a => a.name === args.name ? updatedAuthor : a)
+      return updatedAuthor
     }
   }
 }
