@@ -31,7 +31,7 @@ const App = () => {
   const [page, setPage] = useState('authors')
 
   if (result.loading || bookResult.loading) {
-    return <div>loading... </div>
+    return <div>loading...</div>
   }
 
   return (
