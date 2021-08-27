@@ -18,7 +18,9 @@ export const ALL_BOOKS = gql`
   query {
     allBooks{
       title 
-      author 
+      author {
+        name
+      } 
       published 
     }
   }
@@ -34,6 +36,8 @@ const App = () => {
     return <div>loading...</div>
   }
 
+//  console.log(result.data)
+
   return (
     <div>
       <div>
@@ -43,11 +47,11 @@ const App = () => {
       </div>
 
       <Authors
-        show={page === 'authors'} authors={result.data.allAuthors}
+//        show={page === 'authors'} authors={result.data.allAuthors}
       />
 
       <Books
-        show={page === 'books'} books={bookResult.data.allBooks}
+//        show={page === 'books'} books={bookResult.data.allBooks}
       />
 
       <NewBook

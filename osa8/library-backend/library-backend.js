@@ -1,5 +1,21 @@
 const { ApolloServer, gql } = require('apollo-server')
 const { v1: uuid } = require('uuid')
+const mongoose = require('mongoose')
+const Book = require('./models/book')
+const Author = require('./models/author')
+
+const MONGODB_URI = 'mongodb+srv://kayttis:salis@cluster0.wx3m4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+
+console.log('connecting to', MONGODB_URI)
+
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('connected to MongoDB')
+  })
+  .catch((error) => {
+    console.log('error connection to MongoDB:', error.message)
+  })
+
 
 let authors = [
   {
@@ -106,9 +122,9 @@ const typeDefs = gql`
   type Book {
     title: String!
     published: Int!
-    author: String!
-    id: ID!
+    author: Author!
     genres: [String!]!
+    id: ID!
   }
 
   type Query {
@@ -131,7 +147,76 @@ const typeDefs = gql`
     ): Author
   }
 `
+const resolvers = {
+  Query: {
+    bookCount: () => Book.collection.countDocuments(),
+    allBooks: (root, args) =>  {
+      /*
+      if (!args.author && !args.genre) {
+        return books
+      }
+      if (args.author && args.genre) {
+        return books.filter(b => b.author === args.author).filter(b => b.genres.includes(args.genre))
+      }
+      if (!args.author && args.genre) {
+        return books.filter(b => b.genres.includes(args.genre))
+      }
+      if (args.author && !args.genre) {
+        return books.filter(b => b.author === args.author)
+      }
+      */      
+      return Book.find({})
+    }, 
+    authorCount: () => Author.collection.countDocuments(),
+    allAuthors: () => Author.find({}) 
+  },
+  
+  Author: {
+    name: (root) => root.name
+// ,    bookCount: (root) => books.filter(b => b.author === root.name).length
+  },
+  
+  Mutation: {
+    addBook: (root, args) => {
+      const author = new Author({name: args.author, id: uuid()}) 
+      const newBook = new Book({...args, author: author})
+      books = books.concat(newBook)
+      if (!authors.includes(author)) {
+        authors = authors.concat(author)
+      }
+      return newBook.save()
+    }
+/* async-await -versio
+  Mutation: {
+    addBook: async (root, args) => {
+      const author = new Author({name: args.author, id: uuid()}) 
+      const newBook = new Book({...args, author: author})
+      books = books.concat(newBook)
+      if (!authors.includes(author)) {
+        authors = authors.concat(author)
+      }
+      try {
+        await newBook.save()
+      } catch (error) {
+        throw new UserInputError(error.message)
+      }
+      return newBook
+    }
+*/
 
+    /* ,
+    editAuthor: (root, args) => {
+      const author = authors.find(a => a.name === args.name)
+      if (!author) { return null }
+      const updatedAuthor = {...author, born: args.setBornTo}
+      authors = authors.map(a => a.name === args.name ? updatedAuthor : a)
+      return updatedAuthor.save()      
+    }
+    */
+  }
+}
+
+/* alkuperäinen koodi
 const resolvers = {
   Query: {
     bookCount: () => books.length,
@@ -176,6 +261,7 @@ const resolvers = {
     }
   }
 }
+*/
 
 const server = new ApolloServer({
   typeDefs,
