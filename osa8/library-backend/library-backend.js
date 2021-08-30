@@ -150,30 +150,37 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
-    allBooks: (root, args) =>  {
-      /*
+    allBooks: async (root, args) =>  {
+      console.log('backend books:')
+
       if (!args.author && !args.genre) {
-        return books
+        return await Book.find({}).populate('author')
       }
+      
       if (args.author && args.genre) {
-        return books.filter(b => b.author === args.author).filter(b => b.genres.includes(args.genre))
+        return await Book.find({ author: { $exists: true }}, { genre: { $exists: true }}).populate('author')
+//        return books.filter(b => b.author === args.author).filter(b => b.genres.includes(args.genre))
       }
       if (!args.author && args.genre) {
-        return books.filter(b => b.genres.includes(args.genre))
+        return await Book.find({ genres: { $exists: true }}).populate('author')
+//        return books.filter(b => b.genres.includes(args.genre))
       }
       if (args.author && !args.genre) {
-        return books.filter(b => b.author === args.author)
+        return await Book.find({ author: { $exists: true }}).populate('author')
+//        return books.filter(b => b.author === args.author)
       }
-      */      
-      return Book.find({})
+      
     }, 
     authorCount: () => Author.collection.countDocuments(),
-    allAuthors: () => Author.find({}) 
+    allAuthors: async () => await Author.find({})
   },
   
   Author: {
-    name: (root) => root.name
-// ,    bookCount: (root) => books.filter(b => b.author === root.name).length
+    name: (root) => root.name,
+    bookCount: async (root) => {
+       const r = await Author.find({ author: root.author.name })
+       return r.length
+    } //    bookCount: (root) => 3
   },
   
   Mutation: {
@@ -183,9 +190,21 @@ const resolvers = {
       books = books.concat(newBook)
       if (!authors.includes(author)) {
         authors = authors.concat(author)
+        author.save()
       }
       return newBook.save()
+    },
+    editAuthor: (root, args) => {
+
+      /*
+        const author = authors.find(a => a.name === args.name)
+        if (!author) { return null }
+        const updatedAuthor = {...author, born: args.setBornTo}
+        authors = authors.map(a => a.name === args.name ? updatedAuthor : a)
+        return updatedAuthor
+      */
     }
+
 /* async-await -versio
   Mutation: {
     addBook: async (root, args) => {

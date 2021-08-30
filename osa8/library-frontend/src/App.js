@@ -9,7 +9,6 @@ export const ALL_AUTHORS = gql`
     allAuthors {
       name
       born 
-      bookCount 
     }
   }
 `
@@ -36,7 +35,8 @@ const App = () => {
     return <div>loading...</div>
   }
 
-//  console.log(result.data)
+  console.log('frontend authors:', result.data)
+  console.log('frontend books:', bookResult.data)
 
   return (
     <div>
@@ -47,11 +47,11 @@ const App = () => {
       </div>
 
       <Authors
-//        show={page === 'authors'} authors={result.data.allAuthors}
+        show={page === 'authors'} authors={result.data.allAuthors}
       />
 
       <Books
-//        show={page === 'books'} books={bookResult.data.allBooks}
+        show={page === 'books'} books={bookResult.data.allBooks}
       />
 
       <NewBook
