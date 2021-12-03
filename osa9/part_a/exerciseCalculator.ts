@@ -26,7 +26,7 @@ const dataToRating = (target: number, data: number[]): number => {
     switch (true) {
         case dailyAverage / target >= 0.97 && dailyAverage / target <= 1.03:
             return 3
-        case dailyAverage / target >= 0.95 && dailyAverage / target <= 1.05:
+        case dailyAverage / target >= 0.8 && dailyAverage / target <= 1.2:
             return 2
         default:
             return 1
@@ -56,8 +56,9 @@ const calculateExercises = (target: number, data: number[]): Result => {
 }
 
 const dataAsNumber: number[] = []
-process.argv.forEach(p => {
-   dataAsNumber.push(parseInt(p)) 
-}); 
-console.log(calculateExercises(2, [3,0,2,4.5,0,3,1]))
-//console.log(calculateExercises(dataAsNumber))
+for (let i = 3; i < process.argv.length; i++) {
+    dataAsNumber.push(parseInt(process.argv[i]))
+}
+
+//console.log(calculateExercises(2, [3,0,2,4.5,0,3,1]))
+console.log(calculateExercises(parseInt(process.argv[2]), dataAsNumber))
