@@ -63,7 +63,7 @@ describe('Login', function() {
       cy.contains('likes:3')
     })
     
-    it.only('A blog can be removed', function() {
+    it('A blog can be removed', function() {
       cy.create_blog({ title: 'testtitle', author: 'testauthor', url:'testurl'})
 
       cy.contains('view').click()
@@ -71,6 +71,29 @@ describe('Login', function() {
       cy.get('html').should('not.contain', 'testtitle')
       cy.get('html').should('not.contain', 'testauthor')
       cy.get('html').should('not.contain', 'testurl')
+    })
+
+    it.only('Diffirently named blogs are listed from most to least liked', function() {
+      cy.create_blog({ title: 'testtitle', author: 'testauthor', url:'testurl'})
+      cy.create_blog({ title: 'test2title', author: 'test2author', url:'test2url'})
+      
+      cy.contains('view').click()
+      cy.contains('like').click()
+      cy.contains('likes:1')
+
+      cy.contains('test2title').contains('view').click()
+      cy.contains('test2title').contains('like').click()
+      cy.contains('test2title').contains('like').click()
+
+      let prevLikes = 1000
+      cy.get('.blog').then(($blog) => {
+        let likes = $blog.text().substring(42,43)
+        console.log(cy.get($blog).find('#likes'))
+        console.log($blog.text().substring(42, 43))
+        expect($blog)
+      })
+      
+      
     })
 
   })

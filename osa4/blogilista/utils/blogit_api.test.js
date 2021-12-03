@@ -13,7 +13,13 @@ beforeEach(async () => {
     await Promise.all(promiseArray)
 })
 
-
+beforeEach(async () => {
+    await Blog.deleteMany({})
+    const blogObjects = listHelper.initBlogs
+    .map(blog => new Blog(blog))
+    const promiseArray = blogObjects.map(blog => blog.save())
+    await Promise.all(promiseArray)
+})
 
 test('notes returned as json', async () => {
     const response = await api
@@ -22,7 +28,7 @@ test('notes returned as json', async () => {
     
         expect(response.body).toHaveLength(listHelper.initBlogs.length)
 })
-
+/*
 test('adding valid blog works', async () => {
     const newBlog = {
         title: 'new',
@@ -39,7 +45,7 @@ test('adding valid blog works', async () => {
     const response = await api.get('/api/blogs')
     expect(response.body).toHaveLength(listHelper.initBlogs.length + 1)
 })
-
+/*
 // 4.9
 test('id of blog is called id', async () => {
     const response = await api.get('/api/blogs')
@@ -48,7 +54,7 @@ test('id of blog is called id', async () => {
         expect(response.body[i].id).toBeDefined()
     }
 })
-
+*/
 test('empty likes is set to 0', async () => {
     const newBlog = {
         title: 'new',
@@ -68,7 +74,7 @@ test('empty likes is set to 0', async () => {
     expect(blog.likes).toBe(0)
 
 })
-
+/*
 test('no title no url is not accepted', async () => {
     const newBlog = {
         author: 'me',

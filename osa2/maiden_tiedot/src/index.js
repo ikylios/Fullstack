@@ -8,13 +8,13 @@ const Country = ({ country }) => {
   return(
     <div>
       <h2>{country.name}</h2>
-      Capital {country.capital}<br></br> 
-      Population {country.population}
+      <div>Capital {country.capital}</div> 
+      <div>Population {country.population}</div>
       <h3>Languages</h3>
       <ul>
-      {country.languages.map(language => <li key={country.id}> {language.name} </li>)}
+      {country.languages.map(language => <li key={country.alpha3Code}> {language.name} </li>)}
       </ul>
-      <img src={country.flag} height='100'/>  
+      <img src={country.flag} alt="hidden" height='100'/>  
 
     </div>
   )
@@ -22,25 +22,30 @@ const Country = ({ country }) => {
 
 const Content = ({ content }) => {
 
-  console.log('content', content)
+//  console.log('content', content)
 
-  const showCountry = (content) => {
-    return <Country country={content} />
-  }
-  
   if (content.length > 10) {
     return 'Too many matches'
   }
 
   if (content.length === 1) {
-    return showCountry(content[0])
+    return viewCountry(content[0])
   }
 
   if (content.length <= 10) {
     return content
-      .map(country => <p key={country.id}> {country.name} <button>Show</button> </p>)
+      .map(country => <p key={country.alpha3Code}> {country.name} 
+      <button onClick={() => {
+        viewCountry(country)
+        console.log('bitch')
+      } 
+      }>Show</button> </p>)
   }
 } 
+
+  const viewCountry = (content) => {
+    return <Country country={content} />
+  }
 
 const App = () => {
   
@@ -63,14 +68,14 @@ const App = () => {
     .filter(country => country.name.toLowerCase()
     .includes(filter.toLowerCase()))
 
-  console.log('list', list)
+//  console.log('list', list)
 
   return (
     <div>
       <form>
         Find countries <input value={filter} onChange={handleFilterChange}/>
       </form>  
-      <Content content={list} />
+      <Content content={list}/>
     </div>
   )
 }

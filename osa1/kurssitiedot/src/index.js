@@ -1,6 +1,33 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import ReactDOM from 'react-dom'
 
+const App = () => {
+  console.log(1) 
+  useEffect(() => {
+    console.log(2)	
+    setTimeout(()=>{
+      console.log(3)
+    }, 1000)
+    console.log(4) 
+  })
+  console.log(5) 
+  return (<div>hello</div>)
+}
+
+
+/*
+const Component = () => { console.log('hello') }
+
+const App = () => {
+  const t = [{v:1}, {v:2}, {v:3}] 
+
+  return ( 
+    <div> 
+      {t.map(o => o.v).reduce((s, o) => s + o.v, 0)}
+    </div> 
+  )
+}
+/*
 const Header = (props) => {
   return (
     <h1>{props.course}</h1>
@@ -29,8 +56,20 @@ const Total = (props) => {
   )
 }
 
+const Exam = ({ olio }) => {
+  console.log(olio)
+
+  return (
+    <div>
+      {olio.name} +  
+    </div>
+  )
+}
+
 
 const App = () => {
+  const olio = {name: 'juu', age: 2}
+  console.log(olio.name)
   const course = {
     name: 'Half Stack application development',
     parts: [
@@ -54,8 +93,10 @@ const App = () => {
       <Header course={course.name} />
       <Content parts={course.parts}  />
       <Total parts={course.parts} />
+
+      <Exam olio={olio} />
     </div>
   )
 }
-
+*/
 ReactDOM.render(<App />, document.getElementById('root'))

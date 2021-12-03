@@ -15,7 +15,7 @@ export const ALL_AUTHORS = gql`
 
 export const ALL_BOOKS = gql`
   query {
-    allBooks{
+    allBooks {
       title 
       author {
         name
@@ -35,8 +35,8 @@ const App = () => {
     return <div>loading...</div>
   }
 
-  console.log('frontend authors:', result.data)
-  console.log('frontend books:', bookResult.data)
+//  console.log('frontend authors:', result.data)
+//  console.log('frontend books:', bookResult.data)
 
   return (
     <div>
