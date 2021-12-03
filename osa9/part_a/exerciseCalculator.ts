@@ -38,8 +38,9 @@ const add = (acc: number, a: number): number => {
 }
 
 
-const calculateExercises = (target: number, data: number[]): Result => {
+const calculateExercises = (data: number[]): Result => {
 
+    const target: number = data.shift()
     const rating = dataToRating(target, data)
 
     const result = {
@@ -55,10 +56,26 @@ const calculateExercises = (target: number, data: number[]): Result => {
     return result
 }
 
-const dataAsNumber: number[] = []
-for (let i = 3; i < process.argv.length; i++) {
-    dataAsNumber.push(parseInt(process.argv[i]))
+const parseInputArguments = (input: string[]) => {
+    const data: number[] = []
+
+    for (let i = 2; i < input.length; i++) {
+        if (!isNaN(Number(input[i]))) {
+            data.push(Number(input[i]))
+        } else {
+            throw new Error('Input was not a number')
+        }
+    }
+
+    return data
 }
 
-//console.log(calculateExercises(2, [3,0,2,4.5,0,3,1]))
-console.log(calculateExercises(parseInt(process.argv[2]), dataAsNumber))
+try {
+    const parsedData = parseInputArguments(process.argv)
+    console.log(calculateExercises(parsedData))
+} catch (error: unknown) {
+    console.log('Something went wrong:')
+    if (error instanceof Error) {
+        console.log(error.message)
+    }    
+}
