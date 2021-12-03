@@ -4,15 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-    "ts-node": "ts-node"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ts-node": "ts-node",
+    "calculateBmi": "ts-node bmiCalculator.ts"
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ikylios/Fullstack/issues"
-  },
-  "homepage": "https://github.com/ikylios/Fullstack#readme",
   "devDependencies": {
     "@types/node": "^16.11.11",
     "ts-node": "^10.4.0",
