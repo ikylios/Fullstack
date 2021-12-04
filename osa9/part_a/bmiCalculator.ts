@@ -1,7 +1,6 @@
 const calculateBmi = (height: number, weight: number): string => {
 
     const ratio = weight / ((height/100)*(height/100))
-    console.log(ratio)
     
     switch (true) {
         case ratio >= 30:
@@ -19,24 +18,29 @@ const calculateBmi = (height: number, weight: number): string => {
 
 const parseArguments = (input: string[]) => {
 
-    if (!isNaN(Number(input[2]) && Number(input[3]))) {
+    if (!isNaN(Number(input[0]) && Number(input[1]))) {
         return {
-            h: Number(input[2]),
-            w: Number(input[3])
+            h: Number(input[0]),
+            w: Number(input[1])
         }
     } else {
-        throw new Error('Input values were not numbers')
+        throw new Error('Input value was not a number')
     }
 
 }
 
-
-try {
-    const { h, w } = parseArguments(process.argv)
-    console.log(calculateBmi(h, w))
-} catch (error: unknown) {
-    console.log('Something went wrong:')
-    if (error instanceof Error) {
-        console.log(error.message)
-    }    
+export const execute = (input: string[]): string => {
+    let result = ''
+    try {
+        const { h, w } = parseArguments(input)
+        result = calculateBmi(h, w)
+        return result 
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            result = error.message
+        }    
+    }
+    return result
 }
+
+

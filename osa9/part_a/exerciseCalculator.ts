@@ -74,7 +74,6 @@ try {
     const parsedData = parseInputArguments(process.argv)
     console.log(calculateExercises(parsedData))
 } catch (error: unknown) {
-    console.log('Something went wrong:')
     if (error instanceof Error) {
         console.log(error.message)
     }    
