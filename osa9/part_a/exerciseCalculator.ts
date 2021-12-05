@@ -8,6 +8,10 @@ interface Result {
     average: number
 }
 
+interface ErrorResult {
+    error: string
+}
+
 
 const ratingToDescription = (rating: number): string => {
     switch (rating) {
@@ -58,25 +62,42 @@ const calculateExercises = (data: number[]): Result => {
     return result;
 };
 
-const parseInputArguments = (input: string[]) => {
-    const data: number[] = [];
+const parseInputArguments = (target: string, input: string[]) => {
+    if (!target || input.length < 1) {
+        throw new Error('parameters missing');
+    }
 
-    for (let i = 2; i < input.length; i++) {
+    const data: number[] = [];
+    
+    if (!isNaN(Number(target))) {
+            data.push(Number(target));
+        } else {  
+            throw new Error('malformatted parameters');
+        }
+
+
+    for (let i = 0; i < input.length; i++) {
         if (!isNaN(Number(input[i]))) {
             data.push(Number(input[i]));
         } else {
-            throw new Error('Input was not a number');
+            throw new Error('malformatted parameters');
         }
     }
 
     return data;
 };
 
-try {
-    const parsedData = parseInputArguments(process.argv);
-    console.log(calculateExercises(parsedData));
-} catch (error: unknown) {
-    if (error instanceof Error) {
-        console.log(error.message);
-    }    
-}
+export const executeExercise = (target: string, input: string[]): Result | ErrorResult => {
+    let result: Result | ErrorResult = {error: 'something weird went down'};
+    try {
+        const parsedData = parseInputArguments(target, input);
+        result = calculateExercises(parsedData);
+        return result;
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            result = {error: error.message};
+        }    
+    }
+
+    return result;
+};

@@ -12,7 +12,7 @@ const calculateBmi = (height: number, weight: number): string => {
         case ratio < 18.4:
             return 'Underweight';
         default:
-            return 'uhhh';
+            return 'uhhh this some weird stuff';
     }
 };
 
