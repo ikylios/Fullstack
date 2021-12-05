@@ -1,0 +1,2 @@
+get http://localhost:3002/exercises?daily_exercises=[1,0,2,0,3,0,2.5]&weight=2.5
+Content-Type: application/json

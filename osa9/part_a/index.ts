@@ -26,6 +26,21 @@ app.get('/bmi', (_req, res) => {
     }
 });
 
+app.get('/exercises', (_req, res) => {
+    const e = _req.query.daily_exercises;
+    const t = _req.query.target;
+
+    const result = execute([e as string, t as string]);
+
+    if (result !== 'Input value was not a number') {
+        res.status(200);
+        res.send({result});
+    } else {
+        res.status(400);
+        res.send('malformatted parameters');
+    }
+});
+
 const PORT = 3002;
 
 app.listen(PORT, () => {
