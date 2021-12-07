@@ -1,0 +1,2 @@
+get http://localhost:3002/ping
+Content-Type: application/json
