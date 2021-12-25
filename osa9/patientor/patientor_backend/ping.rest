@@ -1,2 +1,2 @@
-get http://localhost:3002/ping
+get http://localhost:3001/ping
 Content-Type: application/json

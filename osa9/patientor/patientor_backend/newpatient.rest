@@ -1,0 +1,10 @@
+post http://localhost:3001/api/patients
+Content-Type: application/json
+
+    {
+        "name": "Claire McClane",
+        "dateOfBirth": "1986-07-09",
+        "ssn": "090786-122Z",
+        "gender": "female",
+        "occupation": "New york city cop"
+    }
