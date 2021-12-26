@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import express from "express";
 import cors from 'cors';
-import { v1 as uuid } from 'uuid';
 
 import { getDiagnoses } from './diagnoses';
 import { getPatients, addPatient } from './patients';
-import { Patient } from "./types";
+import { toNewPatient } from './utils';
 
 const app = express();
 
@@ -27,22 +25,20 @@ app.get('/api/patients', (_req, res) => {
 });
 
 app.post('/api/patients', (req, res) => {
-    const { name, dateOfBirth, ssn, gender, occupation } = req.body;
-    const id = uuid();
-        
-    const newPatient: Omit<Patient, 'id'> = addPatient(
-        {
-            id,
-            name,
-            dateOfBirth,
-            ssn,
-            gender,
-            occupation
-        }
-    );
+    console.log(req.body)
 
-    res.send(newPatient);
+    try {
+        const newPatient = toNewPatient(req.body)
+        res.send(addPatient(newPatient));
+    } catch (error: unknown) {
+        let errorMessage = 'something went fucky. '
+        if (error instanceof Error) {
+            errorMessage += 'Error:' + error.message
+        }
+        res.status(400).send(errorMessage);
+    }
 });
+
 
 const PORT = 3001;
 
