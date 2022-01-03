@@ -1,6 +1,6 @@
-import { CourseParts } from './types'
+import { Course } from './types'
 
-export const Total = ({ courseParts }: { courseParts: CourseParts }) => {
+export const Total = ({ courseParts }: { courseParts: Course[] }) => {
 
     return (
       <p>
