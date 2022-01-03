@@ -10,5 +10,12 @@ export interface Patient {
     dateOfBirth: string,
     ssn: string
     gender: string, 
-    occupation: string
+    occupation: string,
+    entries: Entry[]
 }
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Entry {
+}
+
+export type PublicPatient = Omit<Patient, 'ssn' | 'entries'>

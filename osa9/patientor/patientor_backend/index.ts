@@ -4,7 +4,7 @@ import express from "express";
 import cors from 'cors';
 
 import { getDiagnoses } from './diagnoses';
-import { getPatients, addPatient } from './patients';
+import { getPatients, getPatient, addPatient } from './patients';
 import { toNewPatient } from './utils';
 
 const app = express();
@@ -39,6 +39,9 @@ app.post('/api/patients', (req, res) => {
     }
 });
 
+app.get('/api/patients/:id', ((req, res) => {
+    res.send(getPatient(req.params.id));
+}));
 
 const PORT = 3001;
 

@@ -1,5 +1,5 @@
 import { v1 as uuid } from 'uuid';
-import { Patient } from "./types";
+import { Patient, } from "./types";
 
 type Fields = { 
     name: unknown, 
@@ -18,6 +18,7 @@ export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Fie
         dateOfBirth: parseDate(dateOfBirth),
         ssn: parseString(ssn),
         gender: parseGender(gender),
+        entries: [],
         occupation: parseString(occupation)
    } 
 
