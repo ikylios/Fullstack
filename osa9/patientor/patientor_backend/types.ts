@@ -20,7 +20,6 @@ export interface Patient {
     entries: Entry[]
 }
 
-
 interface BaseEntry {
     id: string;
     description: string;
