@@ -53,6 +53,7 @@ const PatientPage = () => {
   return (
     <div>
       <h2>{patient.name} <Icon name={genderToIcon(patient.gender)} /> </h2>
+      <Table>
         <Table.Body>
           <Table.Row >
             <Table.Cell><b>ssn:</b> {patient.ssn}</Table.Cell>
@@ -60,13 +61,9 @@ const PatientPage = () => {
           <Table.Row >
             <Table.Cell><b>occupation:</b> {patient.occupation}</Table.Cell>
           </Table.Row>
-          <Table.Row>
-            <h3>Entries</h3>
-          </Table.Row>
-          <Table.Row>
-            <EntriesList entries={patient.entries} />
-          </Table.Row>
         </Table.Body>
+      </Table>
+      <EntriesList entries={patient.entries} />
     </div>
   );
 };
