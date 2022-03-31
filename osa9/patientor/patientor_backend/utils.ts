@@ -1,15 +1,7 @@
 import { v1 as uuid } from 'uuid';
-import { Patient, } from "./types";
+import { Patient, Entry, HealthCheckEntry, OccupationalHealthcareEntry, HospitalEntry } from "./types";
 
-type Fields = { 
-    name: unknown, 
-    dateOfBirth: unknown, 
-    ssn: unknown, 
-    gender: unknown, 
-    occupation: unknown 
-}
-
-export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Fields): Patient => {
+export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Patient): Patient => {
    const id = uuid();
 
    const newPatient: Patient = {
@@ -24,6 +16,52 @@ export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Fie
 
    return newPatient
 }
+
+export const toNewEntry = (props: Entry): Entry => {
+    const id = uuid();
+
+    switch (props.type) {
+        
+        case 'Hospital':
+            const HospitalEntry: HospitalEntry = {
+                id: id,
+                date: props.date,
+                description: props.description,
+                specialist: props.specialist,
+                diagnosisCodes: props.diagnosisCodes,
+                type: props.type,
+                discharge: props.discharge,
+            }
+           return HospitalEntry;
+        
+       case 'OccupationalHealthcare':
+            const OccupationalEntry: OccupationalHealthcareEntry = {
+                id: id,
+                date: props.date,
+                description: props.description,
+                specialist: props.specialist,
+                diagnosisCodes: props.diagnosisCodes,
+                type: props.type,
+                sickLeave: props.sickLeave,
+                employerName: props.employerName
+            }
+            return OccupationalEntry
+        
+        case 'HealthCheck':
+            const HealthEntry: HealthCheckEntry = {
+                id: id,
+                date: props.date,
+                description: props.description,
+                specialist: props.specialist,
+                diagnosisCodes: props.diagnosisCodes,
+                type: props.type,
+                healthCheckRating: props.healthCheckRating
+            }
+            return HealthEntry
+   }
+}
+
+
 
 const parseString = (input: unknown): string => {
     if (!input || !isString(input)) {

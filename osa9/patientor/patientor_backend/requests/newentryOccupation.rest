@@ -1,0 +1,14 @@
+post http://localhost:3001/api/patients/d2773598-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+    {
+        "date": "2022-10-20",
+        "type": "OccupationalHealthcare",
+        "description": "jalkaan sattuu nyt tulee lomaa",
+        "employerName": "rekka-autoyhdistys",
+        "specialist": "Jaana Jalkanen",
+        "sickLeave": {
+          "startDate": "2019-08-05",
+          "endDate": "2019-08-28"
+        }
+    }

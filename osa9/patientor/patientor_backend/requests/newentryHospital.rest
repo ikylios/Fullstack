@@ -1,0 +1,14 @@
+post http://localhost:3001/api/patients/d2773822-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+    {
+        "date": "2022-10-20",
+        "type": "Hospital",
+        "description": "sairaalaan tiesi vie",
+        "diagnosisCodes": ["S62.5"],
+        "specialist": "Hanna Hoitaja",
+        "discharge": {
+          "date": "2042-08-05",
+          "criteria": "healed!"
+        }
+    }

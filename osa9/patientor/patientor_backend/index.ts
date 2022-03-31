@@ -5,7 +5,8 @@ import cors from 'cors';
 
 import { getDiagnoses } from './diagnoses';
 import { getPatients, getPatient, addPatient } from './patients';
-import { toNewPatient } from './utils';
+ import { addEntry } from './entries';
+ import { toNewPatient, toNewEntry } from './utils';
 
 const app = express();
 
@@ -42,6 +43,23 @@ app.post('/api/patients', (req, res) => {
 app.get('/api/patients/:id', ((req, res) => {
     res.send(getPatient(req.params.id));
 }));
+
+app.post('/api/patients/:id/entries', (req, res) => {
+    console.log(req.body)
+    
+    try {
+        const newEntry = toNewEntry(req.body)
+        res.send(addEntry(newEntry, req.params.id));
+    } catch (error: unknown) {
+        let errorMessage = 'something went fucky. '
+        if (error instanceof Error) {
+            errorMessage += 'Error:' + error.message
+        }
+        res.status(400).send(errorMessage);
+    }
+
+});
+
 
 const PORT = 3001;
 
