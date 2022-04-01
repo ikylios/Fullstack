@@ -3,20 +3,49 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useStateValue } from "../state";
 
 import { apiBaseUrl } from "../constants";
-import { Patient, Gender } from "../types";
+import { Patient, Gender, Entry } from "../types";
 
 import { EntriesList } from './Entries';
+import AddEntryModal from "../AddEntryModal";
+import { EntryFormValues } from "../AddEntryModal/AddEntryForm";
 
-import { Table, Icon } from "semantic-ui-react";
+import { Table, Icon, Button } from "semantic-ui-react";
 import { useParams } from "react-router-dom";
 import { SemanticICONS } from "semantic-ui-react/dist/commonjs/generic";
 
 const PatientPage = () => {
 
+  const [, dispatch] = useStateValue();
   const { id } = useParams<{id: string}>();
   const [patient, setPatient] = useState<Patient>();
+  
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | undefined>();
+  
+  const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
+  
+  const submitNewEntry = async (values: EntryFormValues) => {
+    try {
+      const { data: newEntry } = await axios.post<Entry>(
+        `${apiBaseUrl}/patients/${id}/entries`,
+        values
+      );
+      dispatch({ type: "ADD_ENTRY", payload: { patient_id: id, entry: newEntry }});
+      closeModal();
+    } catch (e) {
+      console.error(e.response?.data || 'Unknown Error');
+      setError(e.response?.data?.error || 'Unknown error');
+    }
+  };
+
     
   useEffect(() => {
     const fetchPatient = async () => { 
@@ -63,7 +92,14 @@ const PatientPage = () => {
           </Table.Row>
         </Table.Body>
       </Table>
-      <EntriesList entries={patient.entries} />
+      <Button onClick={() => openModal()}>Add New Entry</Button>
+      <EntriesList entries={patient.entries} /> 
+      <AddEntryModal
+        modalOpen={modalOpen}
+        onSubmit={submitNewEntry}
+        error={error}
+        onClose={closeModal}
+      />
     </div>
   );
 };
