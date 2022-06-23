@@ -69,8 +69,8 @@ export const AddEntryForm = ({ onSubmit, onCancel } : Props ) => {
               component={TextField}
             />
             <SelectField
-              label="Health Rating"
-              name="healthRating"
+              label="healthCheckRating"
+              name="healthCheckRating"
               options={ratingOptions}
             />
             <Grid>

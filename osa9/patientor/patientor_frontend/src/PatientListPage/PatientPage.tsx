@@ -34,32 +34,30 @@ const PatientPage = () => {
   
   const submitNewEntry = async (values: EntryFormValues) => {
     try {
-      const { data: newEntry } = await axios.post<Entry>(
-        `${apiBaseUrl}/patients/${id}/entries`,
-        values
-      );
+      const { data: newEntry } = await axios
+        .post<Entry>(`${apiBaseUrl}/patients/${id}/entries`, values);
       dispatch({ type: "ADD_ENTRY", payload: { patient_id: id, entry: newEntry }});
       closeModal();
+      void fetchPatient();
     } catch (e) {
       console.error(e.response?.data || 'Unknown Error');
       setError(e.response?.data?.error || 'Unknown error');
     }
   };
+    
+  const fetchPatient = async () => { 
+    try {
+      void await axios
+        .get(`${apiBaseUrl}/patients/${id}`)
+        .then(response => setPatient(response.data));
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
     
   useEffect(() => {
-    const fetchPatient = async () => { 
-      try {
-        void await axios
-          .get(`${apiBaseUrl}/patients/${id}`)
-          .then(response => setPatient(response.data));
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    if (!patient) {
-      void fetchPatient();
-    }
+    void fetchPatient();
   }, []);
 
   

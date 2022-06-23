@@ -21,6 +21,8 @@ export type Action =
 
 
 export const reducer = (state: State, action: Action): State => {
+
+  console.log(state);
   switch (action.type) {
     case "SET_PATIENT_LIST":
       return {
@@ -53,10 +55,29 @@ export const reducer = (state: State, action: Action): State => {
         }
       };
     case "ADD_ENTRY":
-//      const new_entries: Entry[] = [ ...state.patients[action.payload.patient_id].entries, action.payload.entry ]
+      const patient: Patient = state.patients[action.payload.patient_id];
+      const new_entries: Entry[] = [ ...state.patients[action.payload.patient_id].entries, action.payload.entry ];
+      patient.entries = new_entries;
+
+//      const entries = state.patients[action.payload.patient_id].entries
+//      const entry_as_array: Entry[] = [action.payload.entry]
+//      const new_entries = entries.concat(action.payload.entry)
+
+//      const new_patients =
 
       return {
         ...state,
+        patients: {
+          ...state.patients,
+          [action.payload.patient_id]: patient
+        }
+        /*
+        ...state,
+        patients: {
+          ...state.patients,
+          [action.payload.patient_id]: patient 
+        }
+        */
       };
     default:
       return state;
