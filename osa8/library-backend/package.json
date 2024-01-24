@@ -10,13 +10,12 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "apollo-server": "^2.25.1",
-    "graphql": "^15.5.0",
-    "mongoose": "^6.0.2",
-    "mongoose-unique-validator": "^2.0.3"
-  },
   "devDependencies": {
     "nodemon": "^2.0.12"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.10.0",
+    "graphql": "^16.8.1",
+    "mongoose": "^8.1.0"
   }
 }

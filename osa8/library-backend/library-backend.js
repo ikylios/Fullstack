@@ -1,11 +1,14 @@
-const { ApolloServer, gql, UserInputError } = require('apollo-server')
+const { ApolloServer } = require('@apollo/server')
+const { startStandaloneServer } = require('@apollo/server/standalone')
+
 const { v1: uuid } = require('uuid')
 const mongoose = require('mongoose')
+
 const Book = require('./models/book')
 const Author = require('./models/author')
 const author = require('./models/author')
 
-const MONGODB_URI = 'mongodb+srv://kayttis:salis@cluster0.wx3m4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+const MONGODB_URI = 'mongodb+srv://kayttis:salis@cluster0.lk93mmd.mongodb.net/?retryWrites=true&w=majority'
 
 console.log('connecting to', MONGODB_URI)
 
@@ -107,7 +110,7 @@ let books = [
   },
 ]
 
-const typeDefs = gql`
+const typeDefs = `
   type Author {
     name: String!
     id: ID!
@@ -238,6 +241,9 @@ const server = new ApolloServer({
   resolvers,
 })
 
-server.listen().then(({ url }) => {
+startStandaloneServer(server, {
+  listen: { port: 4000 },
+}).then(({ url }) => {
   console.log(`Server ready at ${url}`)
 })
+
