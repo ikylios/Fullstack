@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
-import Authors from './components/Authors'
-import Books from './components/Books'
-import NewBook from './components/NewBook'
-import { gql, useQuery } from '@apollo/client'
+import { useState } from "react"
+import Authors from "./components/Authors"
+import Books from "./components/Books"
+import NewBook from "./components/NewBook"
+import LoginForm from "./components/LoginForm"
+import { gql, useQuery, useApolloClient } from "@apollo/client"
 
 export const ALL_AUTHORS = gql`
   query {
     allAuthors {
       name
-      born 
+      born
+      bookCount
     }
   }
 `
@@ -16,48 +18,60 @@ export const ALL_AUTHORS = gql`
 export const ALL_BOOKS = gql`
   query {
     allBooks {
-      title 
+      title
+      published
+      genres
       author {
         name
-      } 
-      published 
+      }
     }
   }
 `
 
-
 const App = () => {
-  const result = useQuery(ALL_AUTHORS)
-  const bookResult = useQuery(ALL_BOOKS)
-  const [page, setPage] = useState('authors')
+  const [token, setToken] = useState(null)
 
-  if (result.loading || bookResult.loading) {
+  const [page, setPage] = useState("login")
+  const authorResult = useQuery(ALL_AUTHORS)
+  const bookResult = useQuery(ALL_BOOKS)
+  const client = useApolloClient()
+
+  //console.log("authorResult", authorResult.data)
+  //console.log("bookResult", bookResult.data)
+  console.log("token", token)
+
+  if (authorResult.loading || bookResult.loading) {
     return <div>loading...</div>
   }
 
-//  console.log('frontend authors:', result.data)
-//  console.log('frontend books:', bookResult.data)
+  const logout = () => {
+    setToken(null)
+    localStorage.clear()
+    client.resetStore()
+  }
 
   return (
     <div>
       <div>
-        <button onClick={() => setPage('authors')}>authors</button>
-        <button onClick={() => setPage('books')}>books</button>
-        <button onClick={() => setPage('add')}>add book</button>
+        <button onClick={() => setPage("authors")}>authors</button>
+        <button onClick={() => setPage("books")}>books</button>
+        <button onClick={() => setPage("add")}>add book</button>
+        {token ? (
+          <button onClick={logout}>logout</button>
+        ) : (
+          <button onClick={() => setPage("login")}>login</button>
+        )}
       </div>
 
       <Authors
-        show={page === 'authors'} authors={result.data.allAuthors}
+        show={page === "authors"}
+        authors={authorResult.data.allAuthors}
       />
+      <Books show={page === "books"} books={bookResult.data.allBooks} />
 
-      <Books
-        show={page === 'books'} books={bookResult.data.allBooks}
-      />
+      <NewBook show={page === "add"} />
 
-      <NewBook
-        show={page === 'add'}
-      />
-
+      <LoginForm show={page === "login"} setToken={setToken} />
     </div>
   )
 }

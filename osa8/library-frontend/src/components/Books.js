@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react"
 
 const Books = (props) => {
   if (!props.show) {
     return null
   }
 
-  const books = props.books
+  const books = props.books ?? []
+  console.log("books", books)
 
   return (
     <div>
@@ -15,20 +16,16 @@ const Books = (props) => {
         <tbody>
           <tr>
             <th></th>
-            <th>
-              author
-            </th>
-            <th>
-              published
-            </th>
+            <th>author</th>
+            <th>published</th>
           </tr>
-          {books.map(a =>
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author.name}</td>
-              <td>{a.published}</td>
+          {books.map((b) => (
+            <tr key={b.title}>
+              <td>{b.title}</td>
+              <td>{b.author.name}</td>
+              <td>{b.published}</td>
             </tr>
-          )}
+          ))}
         </tbody>
       </table>
     </div>

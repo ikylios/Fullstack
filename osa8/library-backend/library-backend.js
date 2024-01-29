@@ -117,16 +117,20 @@ const resolvers = {
 
   Mutation: {
     addBook: async (root, args, context) => {
+      console.log("args", args)
+      console.log("context", context)
       const newAuthor = new Author({
         name: args.author,
         born: null,
-        id: uuid(),
       })
 
       if (context.currentUser) {
         const foundAuthor = await Author.findOne({ name: newAuthor.name })
         if (!foundAuthor) {
           newAuthor.save()
+        } else {
+          const newBook = new Book({ ...args, author: foundAuthor })
+          return newBook.save()
         }
 
         const newBook = new Book({ ...args, author: newAuthor })
@@ -149,7 +153,9 @@ const resolvers = {
       return user.save()
     },
     login: async (root, args) => {
+      console.log("args", args)
       const user = await User.findOne({ username: args.username })
+      console.log("user", user)
 
       if (!user || args.password !== "secret") {
         throw new GraphQLError("wrong credentials", {
@@ -163,8 +169,12 @@ const resolvers = {
         username: user.username,
         id: user._id,
       }
+      console.log("userForToken", userForToken)
 
-      return { token: jwt.sign(userForToken, process.env.JWT_SECRET) }
+      const token = { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
+      console.log("token.value", token)
+
+      return token
     },
   },
 }

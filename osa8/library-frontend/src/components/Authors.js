@@ -1,8 +1,8 @@
-import { useMutation, gql } from '@apollo/client'
-import { ALL_AUTHORS } from '../App'
-import React, { useState } from 'react'
-  
-const EDIT_BIRTHYEAR = gql `
+import { useMutation, gql } from "@apollo/client"
+import { ALL_AUTHORS } from "../App"
+import React, { useState } from "react"
+
+const EDIT_BIRTHYEAR = gql`
   mutation editAuthor($name: String, $setBornTo: Int!) {
     editAuthor(name: $name, setBornTo: $setBornTo) {
       name
@@ -11,28 +11,27 @@ const EDIT_BIRTHYEAR = gql `
     }
   }
 `
-
 const Authors = (props) => {
-  const [author, setAuthor] = useState('')
-  const [born, setBorn] = useState('')
-  
-  const [ editBirthyear ] = useMutation(EDIT_BIRTHYEAR, {
-    refetchQueries: [ { query: ALL_AUTHORS } ]
+  const [author, setAuthor] = useState("")
+  const [born, setBorn] = useState("")
+
+  const [editBirthyear, editBirthyearResult] = useMutation(EDIT_BIRTHYEAR, {
+    refetchQueries: [{ query: ALL_AUTHORS }],
   })
-  
+  console.log("editBirthyear", editBirthyearResult.data)
+
   if (!props.show) {
     return null
   }
 
-  const authors = props.authors 
-
+  const authors = props.authors
   const submit = async (event) => {
     event.preventDefault()
-    
+
     editBirthyear({ variables: { name: author, setBornTo: parseInt(born) } })
 
-    setAuthor('')
-    setBorn('')
+    setAuthor("")
+    setBorn("")
   }
 
   return (
@@ -42,43 +41,44 @@ const Authors = (props) => {
         <tbody>
           <tr>
             <th></th>
-            <th>
-              born
-            </th>
-            <th>
-              books
-            </th>
+            <th>born</th>
+            <th>books</th>
           </tr>
-          {authors.map(a =>
-            <tr key={a.name}>
-              <td>{a.name}</td>
-              <td>{a.born}</td>
-              <td>{a.bookCount}</td>
-            </tr>
-          )}
+          {authors
+            ? authors.map((a) => (
+                <tr key={a.name}>
+                  <td>{a.name}</td>
+                  <td>{a.born}</td>
+                  <td>{a.bookCount}</td>
+                </tr>
+              ))
+            : "list empty"}
         </tbody>
       </table>
 
       <h3>set birthyear</h3>
       <form onSubmit={submit}>
         <div>
-          name 
-            <select onChange={({ target }) => setAuthor(target.value)}>
-              {authors.map(a => 
-                <option key={a.name} value={a.name}>{a.name}</option>
-              )} 
-            </select>
+          name
+          <select onChange={({ target }) => setAuthor(target.value)}>
+            {authors
+              ? authors.map((a) => (
+                  <option key={a.name} value={a.name}>
+                    {a.name}
+                  </option>
+                ))
+              : "list empty"}
+          </select>
         </div>
         <div>
-          born 
+          born
           <input
             value={born}
             onChange={({ target }) => setBorn(target.value)}
           />
         </div>
-        <button type='submit'>update author</button>
+        <button type="submit">update author</button>
       </form>
-
     </div>
   )
 }
