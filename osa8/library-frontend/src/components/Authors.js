@@ -18,7 +18,6 @@ const Authors = (props) => {
   const [editBirthyear, editBirthyearResult] = useMutation(EDIT_BIRTHYEAR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
   })
-  console.log("editBirthyear", editBirthyearResult.data)
 
   if (!props.show) {
     return null

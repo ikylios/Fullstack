@@ -29,7 +29,6 @@ const NewBook = ({ show }) => {
   const [genres, setGenres] = useState([])
 
   const [addBook, addBookResult] = useMutation(ADD_BOOK, {})
-  console.log("addBookResult", addBookResult.data)
 
   const submit = async (event) => {
     event.preventDefault()

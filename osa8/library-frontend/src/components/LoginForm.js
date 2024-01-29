@@ -31,8 +31,6 @@ const LoginForm = ({ show, setToken }) => {
     setPassword("")
   }
 
-  console.log("loginResult", loginResult)
-
   if (!show) {
     return null
   }

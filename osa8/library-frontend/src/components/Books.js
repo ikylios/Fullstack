@@ -6,7 +6,6 @@ const Books = (props) => {
   }
 
   const books = props.books ?? []
-  console.log("books", books)
 
   return (
     <div>

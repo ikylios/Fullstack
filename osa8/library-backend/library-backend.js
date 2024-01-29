@@ -1,7 +1,6 @@
 const { ApolloServer } = require("@apollo/server")
 const { startStandaloneServer } = require("@apollo/server/standalone")
 
-const { v1: uuid } = require("uuid")
 const jwt = require("jsonwebtoken")
 const mongoose = require("mongoose")
 require("dotenv").config()
@@ -117,8 +116,6 @@ const resolvers = {
 
   Mutation: {
     addBook: async (root, args, context) => {
-      console.log("args", args)
-      console.log("context", context)
       const newAuthor = new Author({
         name: args.author,
         born: null,
@@ -138,7 +135,6 @@ const resolvers = {
       }
     },
     editAuthor: async (root, args, context) => {
-      console.log("context", context)
       if (context.currentUser) {
         const author = await Author.findOne({ name: args.name })
         author.born = args.setBornTo
@@ -153,9 +149,7 @@ const resolvers = {
       return user.save()
     },
     login: async (root, args) => {
-      console.log("args", args)
       const user = await User.findOne({ username: args.username })
-      console.log("user", user)
 
       if (!user || args.password !== "secret") {
         throw new GraphQLError("wrong credentials", {
@@ -169,11 +163,8 @@ const resolvers = {
         username: user.username,
         id: user._id,
       }
-      console.log("userForToken", userForToken)
 
       const token = { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
-      console.log("token.value", token)
-
       return token
     },
   },

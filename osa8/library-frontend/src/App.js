@@ -38,7 +38,7 @@ const App = () => {
 
   //console.log("authorResult", authorResult.data)
   //console.log("bookResult", bookResult.data)
-  console.log("token", token)
+  //console.log("token", token)
 
   if (authorResult.loading || bookResult.loading) {
     return <div>loading...</div>
