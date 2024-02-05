@@ -1,31 +1,54 @@
-import { useState } from 'react'
+import { useState } from "react"
+import { gql, useMutation } from "@apollo/client"
 
-const NewBook = (props) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [published, setPublished] = useState('')
-  const [genre, setGenre] = useState('')
+export const ADD_BOOK = gql`
+  mutation addBook(
+    $title: String!
+    $author: String!
+    $published: Int!
+    $genres: [String!]!
+  ) {
+    addBook(
+      title: $title
+      author: $author
+      published: $published
+      genres: $genres
+    ) {
+      published
+      title
+      genres
+    }
+  }
+`
+
+const NewBook = ({ show }) => {
+  const [title, setTitle] = useState("")
+  const [author, setAuthor] = useState("")
+  const [published, setPublished] = useState(0)
+  const [genre, setGenre] = useState("")
   const [genres, setGenres] = useState([])
 
-  if (!props.show) {
-    return null
-  }
+  const [addBook, addBookResult] = useMutation(ADD_BOOK, {})
 
   const submit = async (event) => {
     event.preventDefault()
 
-    console.log('add book...')
+    addBook({ variables: { title, author, published, genres } })
 
-    setTitle('')
-    setPublished('')
-    setAuthor('')
+    setTitle("")
+    setPublished("")
+    setAuthor("")
     setGenres([])
-    setGenre('')
+    setGenre("")
   }
 
   const addGenre = () => {
     setGenres(genres.concat(genre))
-    setGenre('')
+    setGenre("")
+  }
+
+  if (!show) {
+    return null
   }
 
   return (
@@ -62,7 +85,7 @@ const NewBook = (props) => {
             add genre
           </button>
         </div>
-        <div>genres: {genres.join(' ')}</div>
+        <div>genres: {genres.join(" ")}</div>
         <button type="submit">create book</button>
       </form>
     </div>
