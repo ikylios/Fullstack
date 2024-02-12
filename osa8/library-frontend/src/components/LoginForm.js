@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { gql, useMutation } from "@apollo/client"
+import { MY_FAV_GENRE } from "./Recommendations"
 
 export const LOGIN = gql`
   mutation login($username: String!, $password: String!) {
