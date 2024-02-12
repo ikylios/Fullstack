@@ -52,7 +52,8 @@ const typeDefs = `
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks(author: String, genre: String): [Book!]
+    allBooks(genre: String): [Book!]
+    allGenres: [String!]
     allAuthors: [Author!]
     me: User
   }
@@ -83,28 +84,25 @@ const resolvers = {
   Query: {
     authorCount: () => Author.collection.countDocuments(),
     bookCount: () => Book.collection.countDocuments(),
-    me: (root, args, context) => context.currentUser,
+    me: (_root, _args, context) => context.currentUser,
     allAuthors: async () => await Author.find({}),
-    allBooks: async (root, args) => {
-      if (!args.author && !args.genre) {
-        return await Book.find({}).populate("author")
-      }
-      if (args.author && args.genre) {
-        return await Book.find(
-          { author: { name: args.author } },
-          { genre: { $in: args.genres } }
-        ).populate("author")
-      }
-      if (!args.author && args.genre) {
-        return await Book.find({
-          genres: { genre: { $in: args.genres } },
-        }).populate("author")
-      }
-      if (args.author && !args.genre) {
-        return await Book.find({ author: { name: args.author } }).populate(
+    allGenres: async () => {
+      const books = await Book.find({})
+      const genresByBook = books.map((book) => book.genres).flat()
+      const genres = genresByBook
+        .filter((genre, index) => genresByBook.indexOf(genre) === index)
+        .concat("all genres")
+        .sort()
+
+      return genres
+    },
+    allBooks: async (_root, args) => {
+      if (args.genre) {
+        return await Book.find({ genres: { $all: args.genre } }).populate(
           "author"
         )
       }
+      return await Book.find({}).populate("author")
     },
   },
 

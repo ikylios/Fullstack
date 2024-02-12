@@ -15,32 +15,17 @@ export const ALL_AUTHORS = gql`
   }
 `
 
-export const ALL_BOOKS = gql`
-  query {
-    allBooks {
-      title
-      published
-      genres
-      author {
-        name
-      }
-    }
-  }
-`
-
 const App = () => {
   const [token, setToken] = useState(null)
 
   const [page, setPage] = useState("login")
   const authorResult = useQuery(ALL_AUTHORS)
-  const bookResult = useQuery(ALL_BOOKS)
   const client = useApolloClient()
 
   //console.log("authorResult", authorResult.data)
-  //console.log("bookResult", bookResult.data)
   //console.log("token", token)
 
-  if (authorResult.loading || bookResult.loading) {
+  if (authorResult.loading) {
     return <div>loading...</div>
   }
 
@@ -67,7 +52,7 @@ const App = () => {
         show={page === "authors"}
         authors={authorResult.data.allAuthors}
       />
-      <Books show={page === "books"} books={bookResult.data.allBooks} />
+      <Books show={page === "books"} />
 
       <NewBook show={page === "add"} />
 
