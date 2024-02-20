@@ -25,7 +25,6 @@ const App = () => {
 
   //console.log("authorResult", authorResult.data)
   //console.log("token", token)
-
   if (authorResult.loading) {
     return <div>loading...</div>
   }

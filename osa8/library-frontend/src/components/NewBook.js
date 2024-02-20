@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { gql, useMutation } from "@apollo/client"
+import { gql, useMutation, useSubscription } from "@apollo/client"
 
 export const ADD_BOOK = gql`
   mutation addBook(
@@ -21,7 +21,26 @@ export const ADD_BOOK = gql`
   }
 `
 
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      title
+      author {
+        name
+      }
+    }
+  }
+`
+
 const NewBook = ({ show }) => {
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      window.alert(
+        `A new book was added: ${data.data.bookAdded.title} by ${data.data.bookAdded.author.name}`
+      )
+    },
+  })
+
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
   const [published, setPublished] = useState(0)
@@ -73,7 +92,7 @@ const NewBook = ({ show }) => {
           <input
             type="number"
             value={published}
-            onChange={({ target }) => setPublished(target.value)}
+            onChange={({ target }) => setPublished(parseInt(target.value))}
           />
         </div>
         <div>
