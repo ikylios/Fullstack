@@ -22,3 +22,12 @@
 
 
 [Osa 7](https://github.com/ikylios/Fullstack/tree/master/osa7)
+
+
+[Osa 8](https://github.com/ikylios/Fullstack/tree/master/osa8)
+
+
+[Osa 9](https://github.com/ikylios/Fullstack/tree/master/osa9)
+
+
+[Osa 11](https://github.com/ikylios/full-stack-open-pokedex)
