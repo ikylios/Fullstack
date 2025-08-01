@@ -12,14 +12,14 @@ router.get("/", async (req, res) => {
   }
 })
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   try {
     console.log(req.body)
     const blog = await Blog.create(req.body)
     console.log(JSON.stringify(blog, null, 2))
     return res.json(blog)
   } catch (error) {
-    return res.status(400).json({ error })
+    next(error)
   }
 })
 
@@ -34,7 +34,7 @@ router.delete("/:id", async (req, res) => {
   }
 })
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", async (req, res, next) => {
   try {
     await Blog.update(
       { likes: req.body.likes },
@@ -42,8 +42,7 @@ router.put("/:id", async (req, res) => {
     )
     return res.status(200).end()
   } catch (error) {
-    console.log(error)
-    return res.status(400).json({ error })
+    next(error)
   }
 })
 
