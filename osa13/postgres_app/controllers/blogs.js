@@ -23,7 +23,16 @@ const tokenExtractor = (req, res, next) => {
 
 router.get("/", async (req, res) => {
   try {
-    const blogs = await Blog.findAll()
+    const blogs = await Blog.findAll({
+      attributes: {
+        exclude: ["userId"],
+      },
+      include: {
+        model: User,
+        attributes: ["name"],
+      },
+    })
+
     console.log(JSON.stringify(blogs, null, 2))
     res.json(blogs)
   } catch (error) {
@@ -45,8 +54,6 @@ router.post("/", tokenExtractor, async (req, res, next) => {
 router.delete("/:id", tokenExtractor, async (req, res, next) => {
   try {
     const blog = await Blog.findOne({ where: { id: req.params.id } })
-    console.log(blog.userId)
-    console.log(req.decodedToken.id)
     if (blog.userId !== req.decodedToken.id) {
       return res
         .status(403)
