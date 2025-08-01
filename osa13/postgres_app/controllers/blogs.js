@@ -34,4 +34,17 @@ router.delete("/:id", async (req, res) => {
   }
 })
 
+router.put("/:id", async (req, res) => {
+  try {
+    await Blog.update(
+      { likes: req.body.likes },
+      { where: { id: req.params.id } }
+    )
+    return res.status(200).end()
+  } catch (error) {
+    console.log(error)
+    return res.status(400).json({ error })
+  }
+})
+
 module.exports = router
