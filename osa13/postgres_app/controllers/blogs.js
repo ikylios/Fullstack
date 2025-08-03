@@ -23,10 +23,13 @@ const tokenExtractor = (req, res, next) => {
 }
 
 router.get("/", async (req, res) => {
-  const where = {}
+  let fields = {}
   if (req.query.search) {
-    where.title = {
-      [Op.iLike]: `%${req.query.search}%`,
+    fields = {
+      [Op.or]: [
+        { author: { [Op.iLike]: `%${req.query.search}%` } },
+        { title: { [Op.iLike]: `%${req.query.search}%` } },
+      ],
     }
   }
 
@@ -39,7 +42,7 @@ router.get("/", async (req, res) => {
         model: User,
         attributes: ["name"],
       },
-      where,
+      where: fields,
     })
 
     console.log(JSON.stringify(blogs, null, 2))
