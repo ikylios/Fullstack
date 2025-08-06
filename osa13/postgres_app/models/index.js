@@ -7,6 +7,10 @@ Blog.belongsTo(User)
 
 User.belongsToMany(Blog, {
   through: ReadingList,
+  as: "readings",
+})
+Blog.belongsToMany(User, {
+  through: ReadingList,
 })
 
 //Blog.sync({ alter: true })

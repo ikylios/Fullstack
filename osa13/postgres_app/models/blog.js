@@ -24,10 +24,6 @@ Blog.init(
         min: 1991,
       },
     },
-    read: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
   },
   { sequelize, underscored: true, timestamps: false, modelName: "blog" }
 )
