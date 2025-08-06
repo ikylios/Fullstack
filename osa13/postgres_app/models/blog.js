@@ -10,6 +10,11 @@ Blog.init(
     url: { type: DataTypes.TEXT, allowNull: false },
     title: { type: DataTypes.TEXT, allowNull: false },
     likes: { type: DataTypes.INTEGER, defaultValue: 0 },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: "users", key: "id" },
+    },
     publishYear: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -18,6 +23,10 @@ Blog.init(
         max: new Date().getFullYear(),
         min: 1991,
       },
+    },
+    read: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
   },
   { sequelize, underscored: true, timestamps: false, modelName: "blog" }
