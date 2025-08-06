@@ -37,6 +37,10 @@ module.exports = {
         type: DataTypes.DATE,
       },
     })
+    await queryInterface.addColumn("blogs", "publish_year", {
+      type: DataTypes.INTEGER,
+      default: 1991,
+    })
   },
   down: async ({ context: queryInterface }) => {
     await queryInterface.dropTable("blogs")
