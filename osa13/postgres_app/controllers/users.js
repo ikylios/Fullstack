@@ -22,7 +22,10 @@ router.get("/:id", async (req, res, next) => {
           model: Blog,
           as: "readings",
           attributes: ["id", "author", "url", "title", "likes", "publishYear"],
-          through: { attributes: ["read", "id"] },
+          through: {
+            attributes: ["read", "id"],
+            where: req.query.read !== undefined ? { read: req.query.read } : {},
+          },
         },
       ],
     })
