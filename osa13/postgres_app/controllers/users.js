@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res, next) => {
   try {
-    const user = await User.findAll({
+    const user = await User.findOne({
       where: { id: req.params.id },
       attributes: { exclude: ["id", "createdAt", "updatedAt"] },
       include: [
@@ -23,7 +23,7 @@ router.get("/:id", async (req, res, next) => {
           model: Blog,
           as: "readings",
           attributes: ["id", "author", "url", "title", "likes", "publishYear"],
-          through: { attributes: [] },
+          through: { attributes: ["read", "id"] },
         },
       ],
     })
