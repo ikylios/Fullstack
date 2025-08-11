@@ -1,5 +1,5 @@
 const router = require("express").Router()
-const { tokenExtractor } = require("../util/auth")
+const { tokenExtractor, validateSession } = require("../util/auth")
 const { ReadingList } = require("../models")
 
 router.post("/", async (req, res, next) => {
@@ -15,7 +15,7 @@ router.post("/", async (req, res, next) => {
   }
 })
 
-router.put("/:id", tokenExtractor, async (req, res, next) => {
+router.put("/:id", tokenExtractor, validateSession, async (req, res, next) => {
   try {
     const entry = await ReadingList.findByPk(req.params.id)
     if (req.decodedToken.id !== entry.userId) {

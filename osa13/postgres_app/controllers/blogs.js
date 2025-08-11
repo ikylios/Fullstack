@@ -2,7 +2,7 @@ const router = require("express").Router()
 const { Blog } = require("../models")
 const { User } = require("../models")
 const { Op } = require("sequelize")
-const { tokenExtractor } = require("../util/auth")
+const { tokenExtractor, validateSession } = require("../util/auth")
 
 router.get("/", async (req, res) => {
   let fields = {}
@@ -35,7 +35,7 @@ router.get("/", async (req, res) => {
   }
 })
 
-router.post("/", tokenExtractor, async (req, res, next) => {
+router.post("/", tokenExtractor, validateSession, async (req, res, next) => {
   try {
     console.log("decoded token id:", req.decodedToken.id)
     const user = await User.findByPk(req.decodedToken.id)
@@ -52,20 +52,25 @@ router.post("/", tokenExtractor, async (req, res, next) => {
   }
 })
 
-router.delete("/:id", tokenExtractor, async (req, res, next) => {
-  try {
-    const blog = await Blog.findOne({ where: { id: req.params.id } })
-    if (blog.userId !== req.decodedToken.id) {
-      return res
-        .status(403)
-        .json({ error: "Only allowed to delete own blogs." })
+router.delete(
+  "/:id",
+  tokenExtractor,
+  validateSession,
+  async (req, res, next) => {
+    try {
+      const blog = await Blog.findOne({ where: { id: req.params.id } })
+      if (blog.userId !== req.decodedToken.id) {
+        return res
+          .status(403)
+          .json({ error: "Only allowed to delete own blogs." })
+      }
+      await blog.destroy({ where: { id: req.params.id } })
+      return res.status(204).end()
+    } catch (error) {
+      next(error)
     }
-    await blog.destroy({ where: { id: req.params.id } })
-    return res.status(204).end()
-  } catch (error) {
-    next(error)
   }
-})
+)
 
 router.put("/:id", async (req, res, next) => {
   try {
